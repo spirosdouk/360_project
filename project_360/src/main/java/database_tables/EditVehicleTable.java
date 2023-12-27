@@ -73,8 +73,8 @@ public class EditVehicleTable {
                 + "    daily_rental_cost INT not null,"
                 + "    daily_insurance_cost INT not null,"
                 + "    is_damaged VARCHAR(7) not null,"
-                + "    subtype_name VARCHAR(50),"
-                + "    FOREIGN KEY (subtype_name) REFERENCES subtypes(subtype_name),"
+                + "    subtype_name VARCHAR(30),"
+                + "    FOREIGN KEY (subtype_name) REFERENCES subtype(subtype_name),"
                 + " PRIMARY KEY (vehicle_id))";
         stmt.execute(query);
         stmt.close();

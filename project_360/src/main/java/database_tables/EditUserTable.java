@@ -69,7 +69,7 @@ public class EditUserTable {
         stmt.close();
     }
 
-    public void addNewPetOwner(User user) throws ClassNotFoundException {
+    public void addNewUser(User user) throws ClassNotFoundException {
         try {
             Connection con = DB_Connection.getConnection();
 

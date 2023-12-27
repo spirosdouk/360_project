@@ -58,7 +58,7 @@ public class EditSubtypeTable {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
 
-        String query = "CREATE TABLE vehicles "
+        String query = "CREATE TABLE subtype "
                 + "(subtype_name VARCHAR(30) not null unique,"
                 + "    capacity INTEGER not null,"
                 + " PRIMARY KEY (subtype_name))";

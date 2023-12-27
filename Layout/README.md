@@ -13,7 +13,7 @@
 - daily_rental_cost (INT, Not Null): The daily cost to rent the vehicle.
 - daily_insurance_cost (INT, Not Null): The daily insurance cost for the vehicle.
 - is_damaged (VARCHAR(7), Not Null): The damage status of the vehicle.
-- subtype_name (VARCHAR(50)): The name of the subtype the vehicle belongs to.
+- subtype_name (VARCHAR(30), Foreign Key): The name of the subtype the vehicle belongs to, referencing subtype_name in the VehicleSubtypes table.
 <br /><br />
 ## Users
 - user_id (INTEGER, Primary Key, Auto Increment): A unique identifier for each user.
