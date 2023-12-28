@@ -2,6 +2,7 @@ package database_tables;
 
 import com.google.gson.Gson;
 import database_connect.DB_Connection;
+import java.io.BufferedReader;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +17,29 @@ import mainClasses.User;
  * @author dimos
  */
 public class EditUserTable {
+//     public String petKeeperToJSON(PetKeeper user){
+
+    public void addPetUserFromJSON(String json) throws ClassNotFoundException {
+        User user = jsonToPetUser(json);
+        addNewUser(user);
+    }
+    public String userToJSON(User user) {
+        Gson gson = new Gson();
+
+        String json = gson.toJson(user, User.class);
+        return json;
+    }
+    public User jsonToPetUser(String json) {
+        Gson gson = new Gson();
+
+        User user = gson.fromJson(json, User.class);
+        return user;
+    }
+
+    public User jsonToUser(BufferedReader reader) {
+        Gson gson = new Gson();
+        return gson.fromJson(reader, User.class);
+    }
 
     public void deleteUser(String id) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();

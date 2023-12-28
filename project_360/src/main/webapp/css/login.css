@@ -1,0 +1,30 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Dec 28, 2023, 10:38:26 AM
+    Author     : spiros
+*/
+.container-fluid {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* If there is still spacing, you may need to target the children elements */
+.custom-section {
+    padding: 200px !important;
+}
+#section1,
+#section3,
+#section5 {
+    background-color: #e9e9e9; /* Replace with your desired color */
+}
+#section2,
+#section4,
+#section6 {
+    background-color: #1c1b1b; /* Replace with your desired color */
+}
+
