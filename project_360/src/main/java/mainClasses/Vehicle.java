@@ -9,7 +9,7 @@ package mainClasses;
  * @author dimos
  */
 public class Vehicle {
-    int vehicle_id, range_km, rented_count, total_days, quantity, daily_rental_cost, daily_insurance_cost;
+    int vehicle_id, range_km, rented_count, total_days, daily_rental_cost, daily_insurance_cost;
     String brand, model, color, type, is_damaged, lic_plate, sub_type;
 
     // Setter methods
@@ -27,10 +27,6 @@ public class Vehicle {
 
     public void setTotal_days(int total_days) {
         this.total_days = total_days;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public void setDaily_rental_cost(int daily_rental_cost) {
@@ -94,10 +90,6 @@ public class Vehicle {
         return total_days;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
     public int getDaily_rental_cost() {
         return daily_rental_cost;
     }
@@ -125,4 +117,21 @@ public class Vehicle {
     public String Is_damaged() {
         return is_damaged;
     }
+
+    public Vehicle(String _brand, String _model, String _color, String _type, String _lic_plate, int _range_km, int _daily_rental_cost, int _daily_insurance_cost, String _damaged,
+            String _sub_type) {
+        this.brand = _brand;
+        this.model = _model;
+        this.color = _color;
+        this.type = _type;
+        this.lic_plate = _lic_plate;
+        this.rented_count = 0;
+        this.total_days = 0;
+        this.range_km = _range_km;
+        this.daily_rental_cost = _daily_rental_cost;
+        this.daily_insurance_cost = _daily_insurance_cost;
+        this.is_damaged = _damaged;
+        this.sub_type = _sub_type;
+    }
+
 }

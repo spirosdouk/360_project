@@ -27,4 +27,9 @@ public class Subtype {
     public String getSubtype_name() {
         return subtype_name;
     }
+
+    public Subtype(String _name, int _cap) {
+        this.capacity = _cap;
+        this.subtype_name = _name;
+    }
 }

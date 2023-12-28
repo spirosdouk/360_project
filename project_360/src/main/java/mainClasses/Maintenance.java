@@ -66,4 +66,13 @@ public class Maintenance {
     public String isStatus() {
         return status;
     }
+
+    public Maintenance(int _vehicle_id, int _cost, String _start_date, String _end_date, String _maint_type, String _status) {
+        this.cost = _cost;
+        this.vehicle_id = _vehicle_id;
+        this.start_date = _start_date;
+        this.end_date = _end_date;
+        this.maint_type = _maint_type;
+        this.status = _status;
+    }
 }

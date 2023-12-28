@@ -64,15 +64,14 @@ public class EditVehicleTable {
                 + "    brand VARCHAR(30) not null,"
                 + "    model VARCHAR(30) not null,"
                 + "    color VARCHAR(30) not null,"
-                + "    type VARCHAR(10) not null,"
+                + "    type VARCHAR(15) not null,"
                 + "    lic_plate VARCHAR(10) not null unique,"
                 + "    range_km INTEGER not null,"
                 + "    rented_count INT,"
                 + "    total_days INT,"
-                + "    quantity INT not null,"
                 + "    daily_rental_cost INT not null,"
                 + "    daily_insurance_cost INT not null,"
-                + "    is_damaged VARCHAR(7) not null,"
+                + "    is_damaged VARCHAR(15) not null,"
                 + "    subtype_name VARCHAR(30),"
                 + "    FOREIGN KEY (subtype_name) REFERENCES subtype(subtype_name),"
                 + " PRIMARY KEY (vehicle_id))";
@@ -86,8 +85,13 @@ public class EditVehicleTable {
 
             Statement stmt = con.createStatement();
 
+            String subtypeValue = _vehicle.getSub_type();
+            if (!_vehicle.getType().equals("car")) {
+                subtypeValue = "NULL";
+            }
+
             String insertQuery = "INSERT INTO "
-                    + " vehicles (brand, model, color, type, lic_plate, range_km, rented_count, total_days, quantity, daily_rental_cost, daily_insurance_cost, is_damaged, sub_type)"
+                    + " vehicles (brand, model, color, type, lic_plate, range_km, rented_count, total_days, daily_rental_cost, daily_insurance_cost, is_damaged, subtype_name)"
                     + " VALUES ("
                     + "'" + _vehicle.getBrand() + "',"
                     + "'" + _vehicle.getModel() + "',"
@@ -97,11 +101,10 @@ public class EditVehicleTable {
                     + "'" + _vehicle.getRange_km() + "',"
                     + "'" + _vehicle.getRented_count() + "',"
                     + "'" + _vehicle.getTotal_days() + "',"
-                    + "'" + _vehicle.getQuantity() + "',"
                     + "'" + _vehicle.getDaily_rental_cost() + "',"
                     + "'" + _vehicle.getDaily_insurance_cost() + "',"
-                    + "'" + _vehicle.Is_damaged() + "'"
-                    + "'" + _vehicle.getSub_type() + "'"
+                    + "'" + _vehicle.Is_damaged() + "',"
+                    + "'" + subtypeValue + "'"
                     + ")";
             //stmt.execute(table);
             System.out.println(insertQuery);
