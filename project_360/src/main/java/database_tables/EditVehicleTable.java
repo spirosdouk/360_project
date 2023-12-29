@@ -56,6 +56,29 @@ public class EditVehicleTable {
         stmt.executeUpdate(update);
     }
 
+    public void updateVehicleRentalStatus(String lic_plate, boolean isRented) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        PreparedStatement pstmt = null;
+        System.out.println(lic_plate);
+        try {
+            String updateQuery = "UPDATE vehicles SET isRented = ? WHERE lic_plate = ?";
+            pstmt = con.prepareStatement(updateQuery);
+            pstmt.setString(1, isRented ? "true" : "false");
+            pstmt.setString(2, lic_plate);
+            pstmt.executeUpdate();
+            System.out.println("# Vehicle rental status updated in the database.");
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        } finally {
+            if(pstmt != null) {
+                pstmt.close();
+            }
+            if(con != null) {
+                con.close();
+            }
+        }
+    }
+
     public void createVehicleTable() throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();

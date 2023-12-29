@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
+import java.io.BufferedReader;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -25,6 +27,7 @@ import javax.servlet.annotation.WebServlet;
 
 public class GetVehicles extends HttpServlet {
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -45,5 +48,28 @@ public class GetVehicles extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server error occurred");
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Read request data
+
+        BufferedReader reader = request.getReader();
+        String requestData = reader.lines().collect(Collectors.joining());
+        Gson gson = new Gson();
+        Vehicle vehicleUpdate = gson.fromJson(requestData, Vehicle.class);
+
+        EditVehicleTable vehicleTable = new EditVehicleTable();
+        try {
+            // Update vehicle rental status
+            vehicleTable.updateVehicleRentalStatus(vehicleUpdate.getLic_plate(), "true".equals(vehicleUpdate.getIsRented()));
+            System.out.println("vehicleUpdate");
+
+            response.setStatus(HttpServletResponse.SC_OK); // Successful operation
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server error occurred while updating vehicle status");
+        }
+    }
+
 }
 

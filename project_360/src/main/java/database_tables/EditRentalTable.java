@@ -17,10 +17,28 @@ import mainClasses.Rental;
 
 /**
  *
- * @author dimos
+ * @author spiros
  */
 public class EditRentalTable {
+    public void addRentalFromJSON(String json) throws ClassNotFoundException {
+        System.out.println("sucesfully added");
+        Rental rental = jsonToRental(json);
+        addNewRental(rental);
+    }
 
+    public String RentalToJSON(Rental rental) {
+        Gson gson = new Gson();
+
+        String json = gson.toJson(rental, Rental.class);
+        return json;
+    }
+
+    public Rental jsonToRental(String json) {
+        Gson gson = new Gson();
+
+        Rental rental = gson.fromJson(json, Rental.class);
+        return rental;
+    }
     public void deleteRental(String id) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();

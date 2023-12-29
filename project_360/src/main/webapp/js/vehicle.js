@@ -1,4 +1,5 @@
 var vehicles = [];
+var selectedVehicleLicPlate = null;
 function handleSearchSubmit(event) {
     var user = localStorage.getItem('user'); // Retrieve username from localStorage
     var age = localStorage.getItem('age');
@@ -68,6 +69,7 @@ function showRentalModal(licensePlate) {
     }
 
     console.log("Selected Vehicle License Plate:", licensePlate);
+    selectedVehicleLicPlate = licensePlate;
     console.log(userAge);
 
     const modalBody = document.getElementById('rentalModalBody');
@@ -114,9 +116,64 @@ function confirmRental() {
         return; // Stop the function if validation fails
     }
 
-    console.log("From Date:", fromDateInput.value);
-    console.log("To Date:", toDateInput.value);
-    console.log("Include Insurance:", document.getElementById('modalInsuranceCheck').checked);
+    const includeInsurance = document.getElementById('modalInsuranceCheck').checked;
+    const licensePlate = selectedVehicleLicPlate;
+
+    const updateVehicleData = {
+        lic_plate: licensePlate,
+        isRented: "true"
+    };
+
+
+    console.log("updateVehicleData:", updateVehicleData);
+
+    var xhrVehicleUpdate = new XMLHttpRequest();
+    xhrVehicleUpdate.open('POST', '/project_360/GetVehicles', true);
+    xhrVehicleUpdate.setRequestHeader('Content-Type', 'application/json');
+
+    xhrVehicleUpdate.onload = function () {
+        if (xhrVehicleUpdate.status===200) {
+            console.log("Vehicle rental status updated successfully");
+
+            const newRentalData = {
+                username: localStorage.getItem('user'),
+                lic_plate: licensePlate,
+                driv_lic: localStorage.getItem('driv_lic'),
+                duration: (toDate-fromDate)/(1000*3600*24), // Calculate duration in days
+                daily_cost: vehicles.find(v=>v.lic_plate===licensePlate).daily_rental_cost,
+                total_cost: ((toDate-fromDate)/(1000*3600*24))*vehicles.find(v=>v.lic_plate===licensePlate).daily_rental_cost,
+                rental_date: fromDateInput.value,
+                is_returned: "false",
+                has_insurance: includeInsurance?"true":"false",
+                car_change: 0
+            };
+
+            console.log("newRentalData:", newRentalData);
+
+            var xhrRentalCreation = new XMLHttpRequest();
+            xhrRentalCreation.open('POST', '/project_360/RentalServlet', true);
+            xhrRentalCreation.setRequestHeader('Content-Type', 'application/json');
+
+            xhrRentalCreation.onload = function () {
+                if (xhrRentalCreation.status===200) {
+                    console.log("Rental transaction recorded successfully");
+                    // Hide the modal after successful operation
+                    var myModalEl = document.getElementById('rentalModal');
+                    var modal = bootstrap.Modal.getInstance(myModalEl);
+                    modal.hide();
+                } else {
+                    console.error("Error creating rental transaction:", xhrRentalCreation.responseText);
+                    // Revert vehicle status to not rented
+                    revertVehicleStatus(licensePlate);
+                }
+            };
+            xhrRentalCreation.send(JSON.stringify(newRentalData));
+        } else {
+            console.error("Error updating vehicle status:", xhrVehicleUpdate.responseText);
+        }
+    };
+    xhrVehicleUpdate.send(JSON.stringify(updateVehicleData));
+
 
     console.log('Rental confirmed');
 
@@ -126,4 +183,21 @@ function confirmRental() {
     var myModalEl = document.getElementById('rentalModal');
     var modal = bootstrap.Modal.getInstance(myModalEl);
     modal.hide();
+}
+function revertVehicleStatus(licensePlate) {
+    const revertVehicleData = {
+        lic_plate: licensePlate,
+        isRented: "false"
+    };
+    var xhrVehicleRevert = new XMLHttpRequest();
+    xhrVehicleRevert.open('POST', '/project_360/UpdateVehicleServlet', true);
+    xhrVehicleRevert.setRequestHeader('Content-Type', 'application/json');
+    xhrVehicleRevert.onload = function () {
+        if (xhrVehicleRevert.status===200) {
+            console.log("Vehicle rental status reverted successfully");
+        } else {
+            console.error("Error reverting vehicle status:", xhrVehicleRevert.responseText);
+        }
+    };
+    xhrVehicleRevert.send(JSON.stringify(revertVehicleData));
 }

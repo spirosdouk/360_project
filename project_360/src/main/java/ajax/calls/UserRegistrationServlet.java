@@ -28,7 +28,7 @@ public class UserRegistrationServlet extends HttpServlet {
             user = userTable.jsonToUser(inputJSONfromClient);
 
             if(user != null) {
-                userTable.addPetUserFromJSON(userTable.userToJSON(user));
+                userTable.addUserFromJSON(userTable.userToJSON(user));
 
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");

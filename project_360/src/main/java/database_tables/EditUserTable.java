@@ -20,8 +20,8 @@ import mainClasses.User;
 public class EditUserTable {
 //     public String petKeeperToJSON(PetKeeper user){
 
-    public void addPetUserFromJSON(String json) throws ClassNotFoundException {
-        User user = jsonToPetUser(json);
+    public void addUserFromJSON(String json) throws ClassNotFoundException {
+        User user = jsonToUser(json);
         addNewUser(user);
     }
     public String userToJSON(User user) {
@@ -30,7 +30,7 @@ public class EditUserTable {
         String json = gson.toJson(user, User.class);
         return json;
     }
-    public User jsonToPetUser(String json) {
+    public User jsonToUser(String json) {
         Gson gson = new Gson();
 
         User user = gson.fromJson(json, User.class);
