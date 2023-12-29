@@ -72,6 +72,9 @@ function handleLoginSubmit(event) {
                     var response = JSON.parse(xhr.responseText);
                     if (Object.keys(response).length!==0) {
                         // User found
+                        localStorage.setItem('user', username); // Store username in localStorage
+                        localStorage.setItem('age', calculateAge(response.birthdate)); // Store age
+                        localStorage.setItem('driv_lic', response.driv_lic); // Store driving license number
                         window.location.href = "loggedin.html";
                     } else {
                         // No user found or wrong credentials
@@ -88,4 +91,10 @@ function handleLoginSubmit(event) {
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.send(data);
     }
+}
+function calculateAge(birthdate) {
+    var dob = new Date(birthdate);
+    var diff_ms = Date.now()-dob.getTime();
+    var age_dt = new Date(diff_ms);
+    return Math.abs(age_dt.getUTCFullYear()-1970); // Calculate age
 }

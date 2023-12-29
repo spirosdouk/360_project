@@ -18,6 +18,7 @@ public class CheckUsernameServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("yeah");
         String username = request.getParameter("username");
 
         EditUserTable userTable = new EditUserTable();
@@ -33,15 +34,11 @@ public class CheckUsernameServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try (PrintWriter out = response.getWriter()) {
-            if(user != null) {
-                Gson gson = new Gson();
-                String userJson = gson.toJson(user);
-                out.print(userJson);
-            } else {
-                out.print("{}"); // Empty JSON object
-            }
+            // Modified to return a boolean field 'exists'
+            out.print("{\"exists\": " + (user != null) + "}");
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
