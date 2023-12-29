@@ -24,12 +24,12 @@ public class Resources {
     static User user5 = new User("dasdsadsai", "dasdasdasd", "Madasdasdasi", "Kdasdasdasdasdasderaklion", "2001-05-21", 0, 4);
 
 
-    static Vehicle veh0 = new Vehicle("Fiat", "Panda", "blue", "car", "AD4152", 320, 30, 15, "false", "city car");
-    static Vehicle veh1 = new Vehicle("Rad Power", "RadExpand", "black", "bycicle", "b1", 70, 15, 8, "false", "");
-    static Vehicle veh2 = new Vehicle("Yamaha", "Bolt", "gray", "bike", "JD4522", 180, 25, 12, "false", "");
-    static Vehicle veh3 = new Vehicle("Glion", "Balto", "silver", "scooter", "s1", 320, 30, 15, "false", "");
-    static Vehicle veh4 = new Vehicle("Kia", "Sportage", "gray", "car", "TH5263", 320, 30, 15, "true", "SUV");
-    static Vehicle veh5 = new Vehicle("Kia", "Sportage", "red", "car", "FK5161", 320, 30, 15, "false", "SUV");
+    static Vehicle veh0 = new Vehicle("Fiat", "Panda", "blue", "car", "AD4152", 320, 30, 15, "false", "city car", "false");
+    static Vehicle veh1 = new Vehicle("Rad Power", "RadExpand", "black", "bycicle", "b1", 70, 15, 8, "false", "", "false");
+    static Vehicle veh2 = new Vehicle("Yamaha", "Bolt", "gray", "bike", "JD4522", 180, 25, 12, "false", "", "true");
+    static Vehicle veh3 = new Vehicle("Glion", "Balto", "silver", "scooter", "s1", 320, 30, 15, "false", "", "false");
+    static Vehicle veh4 = new Vehicle("Kia", "Sportage", "gray", "car", "TH5263", 320, 30, 15, "true", "SUV", "true");
+    static Vehicle veh5 = new Vehicle("Kia", "Sportage", "red", "car", "FK5161", 320, 30, 15, "false", "SUV", "false");
 
     static Subtype st = new Subtype("NULL", 0);
     static Subtype st0 = new Subtype("SUV", 7);

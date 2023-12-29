@@ -106,3 +106,19 @@ footer {
   bottom: 0;
   width: 100%;
 }
+.vehicle-result {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.vehicle-result h4 {
+    margin-top: 0;
+}
+
+.vehicle-result p {
+    margin-bottom: 5px;
+    font-size: 14px;
+}

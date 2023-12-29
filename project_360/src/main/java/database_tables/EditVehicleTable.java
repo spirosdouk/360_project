@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mainClasses.Vehicle;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -72,6 +73,7 @@ public class EditVehicleTable {
                 + "    daily_rental_cost INT not null,"
                 + "    daily_insurance_cost INT not null,"
                 + "    is_damaged VARCHAR(15) not null,"
+                + "    isRented VARCHAR(15) not null," // Add the new column here
                 + "    subtype_name VARCHAR(30),"
                 + "    FOREIGN KEY (subtype_name) REFERENCES subtype(subtype_name),"
                 + " PRIMARY KEY (vehicle_id))";
@@ -91,7 +93,7 @@ public class EditVehicleTable {
             }
 
             String insertQuery = "INSERT INTO "
-                    + " vehicles (brand, model, color, type, lic_plate, range_km, rented_count, total_days, daily_rental_cost, daily_insurance_cost, is_damaged, subtype_name)"
+                    + " vehicles (brand, model, color, type, lic_plate, range_km, rented_count, total_days, daily_rental_cost, daily_insurance_cost, is_damaged, isRented, subtype_name)"
                     + " VALUES ("
                     + "'" + _vehicle.getBrand() + "',"
                     + "'" + _vehicle.getModel() + "',"
@@ -103,7 +105,8 @@ public class EditVehicleTable {
                     + "'" + _vehicle.getTotal_days() + "',"
                     + "'" + _vehicle.getDaily_rental_cost() + "',"
                     + "'" + _vehicle.getDaily_insurance_cost() + "',"
-                    + "'" + _vehicle.Is_damaged() + "',"
+                    + "'" + _vehicle.getIs_damaged() + "',"
+                    + "'" + _vehicle.getIsRented() + "',"
                     + "'" + subtypeValue + "'"
                     + ")";
             //stmt.execute(table);
@@ -117,5 +120,40 @@ public class EditVehicleTable {
         } catch (SQLException ex) {
             Logger.getLogger(EditVehicleTable.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public ArrayList<Vehicle> getAvailableVehiclesByType(String vehicleType) throws SQLException, ClassNotFoundException {
+        ArrayList<Vehicle> vehicles = new ArrayList<>();
+        Connection con = DB_Connection.getConnection();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            String query = "SELECT * FROM vehicles WHERE type = ? AND isRented = 'false'";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, vehicleType);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String json = DB_Connection.getResultsToJSON(rs);
+                Gson gson = new Gson();
+                Vehicle vehicle = gson.fromJson(json, Vehicle.class);
+                vehicles.add(vehicle);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        } finally {
+            if(rs != null) {
+                rs.close();
+            }
+            if(pstmt != null) {
+                pstmt.close();
+            }
+            if(con != null) {
+                con.close();
+            }
+        }
+
+        return vehicles;
     }
 }
