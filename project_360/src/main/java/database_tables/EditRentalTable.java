@@ -65,8 +65,11 @@ public class EditRentalTable {
                 + " driv_lic INTEGER not NULL, "
                 + " rental_date DATE not NULL, "
                 + " duration INTEGER not NULL, "
+                + " daily_cost INTEGER not NULL, "
                 + " total_cost INTEGER not NULL, "
-                + " is_returned VARCHAR(7) not NULL, "
+                + " is_returned VARCHAR(15) not NULL, "
+                + " has_insurance VARCHAR(15) not NULL, "
+                + " car_change VARCHAR(15) , "
                 + "FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id), "
                 + "FOREIGN KEY (user_id) REFERENCES users(user_id), "
                 + " PRIMARY KEY (rental_id))";
@@ -75,22 +78,25 @@ public class EditRentalTable {
         con.close();
     }
 
-    public void addNewVehicle(Rental _rent) throws ClassNotFoundException {
+    public void addNewRental(Rental _rent) throws ClassNotFoundException {
         try {
             Connection con = DB_Connection.getConnection();
 
             Statement stmt = con.createStatement();
 
             String insertQuery = "INSERT INTO "
-                    + " retnals (user_id, vehicle_id, driv_lic, duration, total_cost, rental_date, is_returned)"
+                    + " retnals (user_id, vehicle_id, driv_lic, duration, daily_cost, total_cost, rental_date, is_returned, has_insurance, car_change)"
                     + " VALUES ("
                     + "'" + _rent.getUser_id() + "',"
                     + "'" + _rent.getVehicle_id() + "',"
                     + "'" + _rent.getDriv_lic() + "',"
-                    + "'" + _rent.getRental_date() + "',"
                     + "'" + _rent.getDuration() + "',"
+                    + "'" + _rent.getDaily_cost() + "',"
                     + "'" + _rent.getTotal_cost() + "',"
-                    + "'" + _rent.Is_returned() + "'"
+                    + "'" + _rent.getRental_date() + "',"
+                    + "'" + _rent.Is_returned() + "',"
+                    + "'" + _rent.getHas_insurance() + "',"
+                    + "'" + _rent.getCar_change() + "'"
                     + ")";
             //stmt.execute(table);
             System.out.println(insertQuery);

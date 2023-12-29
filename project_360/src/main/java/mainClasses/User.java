@@ -73,4 +73,14 @@ public class User {
     public String getBirthdate() {
         return birthdate;
     }
+
+    public User(String _username, String _password, String _name, String _address, String _birthdate, int _driv_lic, int _credit_card) {
+        this.username = _username;
+        this.password = _password;
+        this.name = _name;
+        this.address = _address;
+        this.driv_lic = _driv_lic;
+        this.birthdate = _birthdate;
+        this.credit_card = _credit_card;
+    }
 }

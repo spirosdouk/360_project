@@ -73,7 +73,7 @@ public class EditSubtypeTable {
             Statement stmt = con.createStatement();
 
             String insertQuery = "INSERT INTO "
-                    + " subtype (brand, model, color, type, lic_plate, range_km, rented_count, total_days, quantity, daily_rental_cost, daily_insurance_cost, is_damaged)"
+                    + " subtype (subtype_name, capacity)"
                     + " VALUES ("
                     + "'" + _subtype.getSubtype_name() + "',"
                     + "'" + _subtype.getCapacity() + "'"

@@ -64,8 +64,8 @@ public class EditMaintenanceTable {
                 + " start_date DATE not NULL, "
                 + " end_date DATE not NULL, "
                 + " maint_type VARCHAR(15) not NULL, "
-                + " status VARCHAR(7) not NULL, "
-                + "FOREIGN KEY (vehicle_id) REFERENCES vehicletable(vehicle_id), "
+                + " status VARCHAR(15) not NULL, "
+                + "FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id), "
                 + " PRIMARY KEY (maintenance_id))";
         stmt.execute(sql);
         stmt.close();
