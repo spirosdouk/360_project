@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -46,6 +47,93 @@ public class EditUserTable {
         Statement stmt = con.createStatement();
         String delete = "DELETE FROM users WHERE user_id = '" + id + "'";
         stmt.executeUpdate(delete);
+    }
+    public User getUserByUsername(String username) throws SQLException, ClassNotFoundException {
+        User user = null;
+        Connection con = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = DB_Connection.getConnection();
+            stmt = con.createStatement();
+
+            String query = "SELECT * FROM users WHERE username = '" + username + "'";
+            rs = stmt.executeQuery(query);
+
+            if(rs.next()) {
+                user = new User();
+                user.setUser_id(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password")); // Assuming there is a password column
+                user.setName(rs.getString("name"));
+                user.setAddress(rs.getString("address"));
+                user.setBirthdate(rs.getString("birthdate")); // Make sure the format matches
+                user.setDriv_lic(rs.getInt("driv_lic"));
+                user.setCredit_card(rs.getInt("credit_card"));
+                // Set other user properties as needed
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EditUserTable.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(rs != null) {
+                rs.close();
+            }
+            if(stmt != null) {
+                stmt.close();
+            }
+            if(con != null) {
+                con.close();
+            }
+        }
+
+        return user;
+    }
+
+    public User getUserByUsernameAndPassword(String username, String password) throws SQLException, ClassNotFoundException {
+        User user = null;
+        Connection con = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = DB_Connection.getConnection();
+            stmt = con.createStatement();
+
+            // Use parameter placeholders to prevent SQL injection
+            String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, username);
+            pstmt.setString(2, password); // Assuming you store hashed passwords
+            rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                user = new User();
+                user.setUser_id(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setName(rs.getString("name"));
+                user.setAddress(rs.getString("address"));
+                user.setBirthdate(rs.getString("birthdate"));
+                user.setDriv_lic(rs.getInt("driv_lic"));
+                user.setCredit_card(rs.getInt("credit_card"));
+                // Set other user properties as needed
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EditUserTable.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(rs != null) {
+                rs.close();
+            }
+            if(stmt != null) {
+                stmt.close();
+            }
+            if(con != null) {
+                con.close();
+            }
+        }
+
+        return user;
     }
 
     public ArrayList<User> getAllUsers() throws SQLException, ClassNotFoundException {

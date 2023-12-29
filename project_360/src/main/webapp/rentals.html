@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rentals Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Rentals Dashboard</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <!-- Add other navigation links if needed -->
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Section 1: Current Rentals -->
+    <div id="section1" class="container-fluid custom-section">
+      <h2>Current Rentals</h2>
+      <p>This section displays the current rentals of the user.</p>
+      <div id="currentRentalsList">
+        <!-- Dynamic content: Current rentals will be listed here -->
+      </div>
+    </div>
+
+    <!-- Section 2: Issue Form -->
+    <div
+      id="section2"
+      class="container-fluid custom-section text-white bg-dark"
+    >
+      <h2>Report an Issue</h2>
+      <p>
+        This section allows the user to report issues with the rented vehicles.
+      </p>
+      <form id="issueForm">
+        <!-- Form content: Inputs for reporting issues -->
+        <div class="mb-3">
+          <label for="vehicleId" class="form-label">Vehicle ID</label>
+          <input
+            type="text"
+            class="form-control"
+            id="vehicleId"
+            placeholder="Enter Vehicle ID"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="issueDescription" class="form-label"
+            >Issue Description</label
+          >
+          <textarea
+            class="form-control"
+            id="issueDescription"
+            rows="3"
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Report</button>
+      </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
