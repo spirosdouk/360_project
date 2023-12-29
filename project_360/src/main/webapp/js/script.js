@@ -28,9 +28,9 @@ function handleRegistrationSubmit(event) {
                     fetch('/project_360/UserRegistrationServlet', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Content-Type': 'application/json',
                         },
-                        body: new URLSearchParams(registrationData)
+                        body: JSON.stringify(registrationData)
                     })
                             .then(response=>{
                                 if (response.ok) {
@@ -55,31 +55,37 @@ function handleRegistrationSubmit(event) {
 }
 
 function handleLoginSubmit(event) {
-    event.preventDefault(); // Prevents the default form submission action
+    event.preventDefault();
 
     const username = document.getElementById("loginUsername").value;
     const password = document.getElementById("loginPassword").value;
+
+    console.log("Attempting login for:", username); // Debugging line
+
     if (username==="admin"&&password==="admin") {
         window.location.href = "html/AdminLoggedin.html";
-    }
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-        if (xhr.readyState===4) {
-            if (xhr.status===200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.userExists) {
-                    window.location.href = "login.html";
+    } else {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            if (xhr.readyState===4) {
+                if (xhr.status===200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (Object.keys(response).length!==0) {
+                        // User found
+                        window.location.href = "loggedin.html";
+                    } else {
+                        // No user found or wrong credentials
+                        document.getElementById("error").innerHTML = "Wrong Credentials";
+                    }
                 } else {
-                    $("#error").html("Wrong Credentials");
+                    document.getElementById("error").innerHTML = "Error: "+xhr.status;
                 }
-            } else {
-                $("#error").html("Error: "+xhr.status);
             }
-        }
-    };
+        };
 
-    var data = JSON.stringify({"username": username, "password": password});
-    xhr.open('POST', 'CheckUsernameServlet');
-    xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.send(data);
+        var data = JSON.stringify({"username": username, "password": password});
+        xhr.open('POST', 'CheckUsernameServlet');
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send(data);
+    }
 }

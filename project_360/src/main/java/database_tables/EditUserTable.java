@@ -174,8 +174,8 @@ public class EditUserTable {
                 + "    name VARCHAR(50) not null,"
                 + "    birthdate DATE not null,"
                 + "    address VARCHAR(100) not null,"
-                + "    driv_lic INT,"
-                + "    credit_card INT not null,"
+                + "    driv_lic BIGINT,"
+                + "    credit_card BIGINT not null,"
                 + " PRIMARY KEY (user_id))";
         stmt.execute(query);
         stmt.close();

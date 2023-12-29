@@ -45,9 +45,9 @@
       <div class="container">
         <section id="searchSection" class="my-5">
           <h2>Search Available Vehicles</h2>
-          <form id="searchForm" class="row g-3">
-            <div class="col-md-4">
-              <label for="vehicleType" class="form-label"
+          <form id="searchForm" class="row g-3" onsubmit="handleSearchSubmit(event)">
+              <div class="col-md-4">
+                  <label for="vehicleType" class="form-label"
                 >Choose a Vehicle Type:</label
               >
               <select id="vehicleType" name="vehicleType" class="form-select">
@@ -56,20 +56,28 @@
               </select>
             </div>
             <div class="col-md-4">
-              <label for="pickupLocation" class="form-label"
-                >Pick-up Location:</label
-              >
-              <input type="text" id="pickupLocation" class="form-control" />
+                <label for="fromdate" class="form-label"
+                       >From Date:</label
+                >
+              <input type="text" id="fromdate" class="form-control" />
             </div>
             <div class="col-md-4">
-              <label for="returnLocation" class="form-label"
-                >Return Location:</label
-              >
-              <input type="text" id="returnLocation" class="form-control" />
+                <label for="todate" class="form-label"
+                       >To Date:</label
+                >
+              <input type="text" id="todate" class="form-control" />
             </div>
-            <!-- Additional form fields as needed -->
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary">Search</button>
+
+              <div class="col-md-12">
+                  <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="insuranceCheck">
+                      <label class="form-check-label" for="insuranceCheck">
+                          Include Insurance
+                      </label>
+                  </div>
+              </div>
+              <div class="col-12">
+                  <button type="submit" class="btn btn-primary">Search</button>
             </div>
           </form>
         </section>
