@@ -6,31 +6,32 @@ package mainClasses;
  */
 public class Rental {
 
-    int rental_id, user_id, driv_lic, vehicle_id, duration, total_cost, daily_cost, car_change;
-    String rental_date, is_returned, has_insurance;
+    int rental_id, duration, daily_cost, car_change;
+    String rental_date, is_returned, has_insurance, username, lic_plate;
+    double total_cost;
+    int driv_lic;
 
-    // Setter methods
     public void setRental_id(int rental_id) {
         this.rental_id = rental_id;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setDriv_lic(int driv_lic) {
         this.driv_lic = driv_lic;
     }
 
-    public void setVehicle_id(int vehicle_id) {
-        this.vehicle_id = vehicle_id;
+    public void setLic_plate(String lic_plate) {
+        this.lic_plate = lic_plate;
     }
 
     public void setDuration(int duration) {
         this.duration = duration;
     }
 
-    public void setTotal_cost(int total_cost) {
+    public void setTotal_cost(double total_cost) {
         this.total_cost = total_cost;
     }
 
@@ -54,7 +55,6 @@ public class Rental {
         this.car_change = car_change;
     }
 
-    // Getter methods
     public int getDaily_cost() {
         return daily_cost;
     }
@@ -63,23 +63,23 @@ public class Rental {
         return rental_id;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public String getUsername() {
+        return username;
     }
 
     public int getDriv_lic() {
         return driv_lic;
     }
 
-    public int getVehicle_id() {
-        return vehicle_id;
+    public String getLic_plate() {
+        return lic_plate;
     }
 
     public int getDuration() {
         return duration;
     }
 
-    public int getTotal_cost() {
+    public double getTotal_cost() {
         return total_cost;
     }
 
@@ -99,10 +99,10 @@ public class Rental {
         return car_change;
     }
 
-    public Rental(int _user_id, int _driv_lic, int _vehicle_id, int _duration, int _daily_cost, String _rental_date, String _is_returned, String _has_insurance, int _car_change) {
-        this.user_id = _user_id;
+    public Rental(String username, int _driv_lic, String _lic_plate, int _duration, int _daily_cost, String _rental_date, String _is_returned, String _has_insurance, int _car_change) {
+        this.username = username;
         this.driv_lic = _driv_lic;
-        this.vehicle_id = _vehicle_id;
+        this.lic_plate = _lic_plate;
         this.duration = _duration;
         this.daily_cost = _daily_cost;
         this.total_cost = _duration * _daily_cost;

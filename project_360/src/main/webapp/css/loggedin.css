@@ -1,0 +1,124 @@
+/* Reset some basic elements */
+body,
+h1,
+h2,
+h3,
+p,
+form,
+input,
+select,
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* Body styling */
+body {
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f4f4f4;
+  padding-bottom: 50px; /* space for footer */
+}
+
+/* Header */
+header {
+  background-color: #0056b3;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+}
+
+header h1 {
+  margin-bottom: 0;
+}
+
+/* Navigation Links */
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+  margin: 0 5px;
+}
+
+nav a:hover {
+  background-color: #003d7a;
+}
+
+/* Main content */
+main {
+  padding: 20px;
+}
+
+/* Section styling */
+section {
+  background: white;
+  margin: 10px 0;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Form styling */
+form {
+  margin-top: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.form-control,
+.form-select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* Button styling */
+button {
+  display: inline-block;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+/* Footer */
+footer {
+  background-color: #0056b3;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+.vehicle-result {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.vehicle-result h4 {
+    margin-top: 0;
+}
+
+.vehicle-result p {
+    margin-bottom: 5px;
+    font-size: 14px;
+}

@@ -6,16 +6,15 @@ package mainClasses;
  */
 public class Maintenance {
 
-    int maintenance_id, vehicle_id, cost;
-    String start_date, end_date, maint_type, status;
+    int maintenance_id, cost;
+    String start_date, end_date, maint_type, status, lic_plate;
 
-    // Setter methods
     public void setMaintenance_id(int maintenance_id) {
         this.maintenance_id = maintenance_id;
     }
 
-    public void setVehicle_id(int vehicle_id) {
-        this.vehicle_id = vehicle_id;
+    public void setLic_plate(String lic_plate) {
+        this.lic_plate = lic_plate;
     }
 
     public void setCost(int cost) {
@@ -38,13 +37,12 @@ public class Maintenance {
         this.status = status;
     }
 
-    // Getter methods
     public int getMaintenance_id() {
         return maintenance_id;
     }
 
-    public int getVehicle_id() {
-        return vehicle_id;
+    public String getLic_plate() {
+        return lic_plate;
     }
 
     public int getCost() {
@@ -67,9 +65,9 @@ public class Maintenance {
         return status;
     }
 
-    public Maintenance(int _vehicle_id, int _cost, String _start_date, String _end_date, String _maint_type, String _status) {
+    public Maintenance(String _lic_plate, int _cost, String _start_date, String _end_date, String _maint_type, String _status) {
         this.cost = _cost;
-        this.vehicle_id = _vehicle_id;
+        this.lic_plate = _lic_plate;
         this.start_date = _start_date;
         this.end_date = _end_date;
         this.maint_type = _maint_type;

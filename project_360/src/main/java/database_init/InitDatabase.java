@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package database_init;
 
 import static database_connect.DB_Connection.getInitialConnection;
@@ -94,9 +90,7 @@ public class InitDatabase {
         EditRentalTable ert = new EditRentalTable();
         ert.addNewRental(Resources.rental0);
         ert.addNewRental(Resources.rental1);
-        ert.addNewRental(Resources.rental2);
-        ert.addNewRental(Resources.rental3);
-        ert.addNewRental(Resources.rental4);
+
 
         EditMaintenanceTable emt = new EditMaintenanceTable();
         emt.addNewMaintenance(Resources.maint0);

@@ -1,6 +1,5 @@
 package ajax.calls;
 
-import database_tables.EditUserTable;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import mainClasses.User;
+import database_tables.EditUserTable;
 
 @WebServlet("/UserRegistrationServlet")
 public class UserRegistrationServlet extends HttpServlet {
@@ -28,7 +28,7 @@ public class UserRegistrationServlet extends HttpServlet {
             user = userTable.jsonToUser(inputJSONfromClient);
 
             if(user != null) {
-                userTable.addPetUserFromJSON(userTable.userToJSON(user));
+                userTable.addUserFromJSON(userTable.userToJSON(user));
 
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");

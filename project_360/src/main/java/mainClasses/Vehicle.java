@@ -1,18 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package mainClasses;
-
 /**
  *
  * @author dimos
  */
 public class Vehicle {
     int vehicle_id, range_km, rented_count, total_days, daily_rental_cost, daily_insurance_cost;
-    String brand, model, color, type, is_damaged, lic_plate, sub_type;
+    String brand, model, color, type, is_damaged, lic_plate, sub_type, isRented;
 
-    // Setter methods
     public void setVehicle_id(int vehicle_id) {
         this.vehicle_id = vehicle_id;
     }
@@ -65,7 +59,6 @@ public class Vehicle {
         this.sub_type = sub_type;
     }
 
-    // Getter methods
     public String getSub_type() {
         return sub_type;
     }
@@ -114,12 +107,19 @@ public class Vehicle {
         return type;
     }
 
-    public String Is_damaged() {
+    public String getIs_damaged() {
         return is_damaged;
+    }
+    public void setIsRented(String isRented) {
+        this.isRented = isRented;
+    }
+
+    public String getIsRented() {
+        return isRented;
     }
 
     public Vehicle(String _brand, String _model, String _color, String _type, String _lic_plate, int _range_km, int _daily_rental_cost, int _daily_insurance_cost, String _damaged,
-            String _sub_type) {
+            String _sub_type, String isRented) {
         this.brand = _brand;
         this.model = _model;
         this.color = _color;
@@ -132,6 +132,7 @@ public class Vehicle {
         this.daily_insurance_cost = _daily_insurance_cost;
         this.is_damaged = _damaged;
         this.sub_type = _sub_type;
+        this.isRented = isRented;
     }
 
 }

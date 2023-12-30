@@ -1,14 +1,13 @@
 package mainClasses;
-
 /**
  *
  * @author dimos
  */
 public class User {
-    int user_id, credit_card, driv_lic;
+    int user_id;
     String password, name, address, birthdate, username;
+    long credit_card, driv_lic;
 
-    // Setter methods
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
@@ -41,7 +40,6 @@ public class User {
         this.username = username;
     }
 
-    // Getter methods
     public String getUsername() {
         return username;
     }
@@ -50,11 +48,11 @@ public class User {
         return user_id;
     }
 
-    public int getCredit_card() {
+    public long getCredit_card() {
         return credit_card;
     }
 
-    public int getDriv_lic() {
+    public long getDriv_lic() {
         return driv_lic;
     }
 
@@ -72,6 +70,8 @@ public class User {
 
     public String getBirthdate() {
         return birthdate;
+    }
+    public User() {
     }
 
     public User(String _username, String _password, String _name, String _address, String _birthdate, int _driv_lic, int _credit_card) {

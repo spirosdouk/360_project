@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vehicle Management - Admin</title>
+    <link rel="stylesheet" href="../css/styles_admin_login.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+    <script src="js/admin.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="container text-center">
+        <div class="row">
+          <div class="col">
+            <img src="img/img_01.png" alt="ranger-header" />
+          </div>
+          <div class="col-8 align-self-center">
+            <h1>Admin</h1>
+          </div>
+          <div id="lr" class="col lr">
+            <p><a onclick="logoutUser()" id="logout">Logout</a></p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="my-3">
+        <h2>New Vehicle Procurement</h2>
+        <form id="newVehicleForm">
+          <!-- Form for adding new vehicles -->
+        </form>
+      </section>
+
+      <section class="my-3">
+        <h2>Vehicle Status by Category</h2>
+        <div id="vehicleStatus"></div>
+      </section>
+
+      <section class="my-3">
+        <h2>Rentals by Time Period</h2>
+        <div id="rentalsByTime"></div>
+      </section>
+
+      <section class="my-3">
+        <h2>Average Rental Duration by Category</h2>
+        <div id="averageRentalDuration"></div>
+      </section>
+
+      <section class="my-3">
+        <h2>Revenue by Time Period and Category</h2>
+        <div id="revenueByTimeAndCategory"></div>
+      </section>
+
+      <section class="my-3">
+        <h2>Total Maintenance and Repair Costs</h2>
+        <div id="maintenanceCosts"></div>
+      </section>
+
+      <section class="my-3">
+        <h2>Most Popular Vehicle by Category</h2>
+        <div id="popularVehicleByCategory"></div>
+      </section>
+
+    </main>
+  </body>
+</html>
