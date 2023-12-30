@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mainClasses.Rental;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -45,7 +46,40 @@ public class EditRentalTable {
         String delete = "DELETE FROM rentals WHERE rental_id = '" + id + "'";
         stmt.executeUpdate(delete);
     }
+    public ArrayList<Rental> getRentalsByUsername(String username) throws SQLException, ClassNotFoundException {
+        ArrayList<Rental> rentals = new ArrayList<>();
+        Connection con = DB_Connection.getConnection();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
+        try {
+            String query = "SELECT * FROM rentals WHERE username = ?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, username);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String json = DB_Connection.getResultsToJSON(rs);
+                Gson gson = new Gson();
+                Rental rental = gson.fromJson(json, Rental.class);
+                rentals.add(rental);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        } finally {
+            if(rs != null) {
+                rs.close();
+            }
+            if(pstmt != null) {
+                pstmt.close();
+            }
+            if(con != null) {
+                con.close();
+            }
+        }
+
+        return rentals;
+    }
     public ArrayList<Rental> getAllRentals() throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
@@ -66,12 +100,44 @@ public class EditRentalTable {
         return null;
     }
 
-    public void updateRentalField(String username, String field, String value) throws SQLException, ClassNotFoundException {
+//    public void updateRentalReturnStatus(String licPlate, boolean isReturned) throws SQLException, ClassNotFoundException {
+//        Connection con = DB_Connection.getConnection();
+//        PreparedStatement pstmt = null;
+//        try {
+//            String updateQuery = "UPDATE rentals SET is_returned = ? WHERE lic_plate = ?";
+//            pstmt = con.prepareStatement(updateQuery);
+//            pstmt.setString(1, isReturned ? "true" : "false");
+//            pstmt.setString(2, licPlate);
+//            pstmt.executeUpdate();
+//        } catch (SQLException e) {
+//            System.err.println("SQL Exception: " + e.getMessage());
+//        } finally {
+//            if(pstmt != null) {
+//                pstmt.close();
+//            }
+//            if(con != null) {
+//                con.close();
+//            }
+//        }
+//    }
+    public void updateRentalReturnStatus(String lic_plate, double newTotalCost, String isReturned) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
-        Statement stmt = con.createStatement();
-        String update = "UPDATE rentals SET " + field + "='" + value + "' WHERE username = '" + username + "'";
-        stmt.executeUpdate(update);
+        try {
+            String updateQuery = "UPDATE rentals SET total_cost = ?, is_returned = ? WHERE lic_plate = ?";
+            PreparedStatement pstmt = con.prepareStatement(updateQuery);
+            pstmt.setDouble(1, newTotalCost); // Update total_cost
+            pstmt.setString(2, isReturned);  // Update is_returned
+            pstmt.setString(3, lic_plate);    // Where lic_plate matches
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
     }
+
 
     public void createRentalTable() throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
@@ -84,7 +150,7 @@ public class EditRentalTable {
                 + " rental_date DATE not NULL, "
                 + " duration INTEGER not NULL, "
                 + " daily_cost INTEGER not NULL, "
-                + " total_cost INTEGER not NULL, "
+                + " total_cost DOUBLE not NULL, "
                 + " is_returned VARCHAR(15) not NULL, "
                 + " has_insurance VARCHAR(15) not NULL, "
                 + " car_change VARCHAR(15) , "

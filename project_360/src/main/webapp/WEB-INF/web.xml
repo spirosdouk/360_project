@@ -8,6 +8,10 @@
         <servlet-name>RentalServlet</servlet-name>
         <servlet-class>ajax.calls.RentalServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReturnRentalServlet</servlet-name>
+        <servlet-class>ajax.calls.ReturnRentalServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetVehicles</servlet-name>
         <url-pattern>/GetVehicles</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>RentalServlet</servlet-name>
         <url-pattern>/RentalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReturnRentalServlet</servlet-name>
+        <url-pattern>/ReturnRentalServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

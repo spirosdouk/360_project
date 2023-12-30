@@ -135,13 +135,20 @@ function confirmRental() {
         if (xhrVehicleUpdate.status===200) {
             console.log("Vehicle rental status updated successfully");
 
+            const vehicle = vehicles.find(v=>v.lic_plate===selectedVehicleLicPlate);
+
+            const duration = (toDate-fromDate)/(1000*3600*24); // Calculate duration in days
+            const dailyCost = vehicle.daily_rental_cost+(includeInsurance?vehicle.daily_insurance_cost:0);
+            const totalCost = dailyCost*duration; // Total cost for the rental period
+
+
             const newRentalData = {
                 username: localStorage.getItem('user'),
                 lic_plate: licensePlate,
                 driv_lic: localStorage.getItem('driv_lic'),
                 duration: (toDate-fromDate)/(1000*3600*24), // Calculate duration in days
-                daily_cost: vehicles.find(v=>v.lic_plate===licensePlate).daily_rental_cost,
-                total_cost: ((toDate-fromDate)/(1000*3600*24))*vehicles.find(v=>v.lic_plate===licensePlate).daily_rental_cost,
+                daily_cost: dailyCost,
+                total_cost: totalCost,
                 rental_date: fromDateInput.value,
                 is_returned: "false",
                 has_insurance: includeInsurance?"true":"false",
@@ -201,3 +208,76 @@ function revertVehicleStatus(licensePlate) {
     };
     xhrVehicleRevert.send(JSON.stringify(revertVehicleData));
 }
+function fetchUserRentals() {
+    var user = localStorage.getItem('user');
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('GET', '/project_360/RentalServlet?username='+encodeURIComponent(user), true);
+    xhr.onload = function () {
+        if (xhr.status===200) {
+            var rentals = JSON.parse(xhr.responseText);
+            displayUserRentals(rentals);
+        } else {
+            console.error("Error fetching rentals:", xhr.responseText);
+        }
+    };
+    xhr.send();
+}
+
+function displayUserRentals(rentals) {
+    const tableBody = document.getElementById('currentRentalsTable').getElementsByTagName('tbody')[0];
+    tableBody.innerHTML = ''; // Clear existing rows
+
+    rentals.forEach(rental=>{
+        const row = tableBody.insertRow();
+        row.insertCell(0).innerHTML = rental.username;
+        row.insertCell(1).innerHTML = rental.lic_plate;
+        row.insertCell(2).innerHTML = rental.driv_lic;
+        row.insertCell(3).innerHTML = rental.duration;
+        row.insertCell(4).innerHTML = rental.daily_cost;
+        row.insertCell(5).innerHTML = rental.total_cost;
+        row.insertCell(6).innerHTML = rental.rental_date;
+        if (rental.is_returned==="false") {
+            let returnCell = row.insertCell(7);
+            let returnButton = document.createElement('button');
+            returnButton.innerHTML = 'Return';
+            returnButton.classList.add('btn', 'btn-primary');
+            returnButton.onclick = function () {
+                returnRental(rental.lic_plate, rental.total_cost, rental.rental_date, rental.duration);
+            };
+            returnCell.appendChild(returnButton);
+        } else {
+            row.insertCell(7).innerHTML = 'Returned';
+        }
+        row.insertCell(8).innerHTML = rental.has_insurance;
+        row.insertCell(9).innerHTML = rental.car_change;
+    });
+}
+
+function returnRental(licensePlate, totalCost, rentdate, dur) {
+    console.log("Returning rental with license plate:", licensePlate, "and total cost:", totalCost);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/project_360/ReturnRentalServlet', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function () {
+        if (xhr.status===200) {
+            console.log("Rental returned successfully");
+            // Refresh the rentals display
+            fetchUserRentals();
+        } else {
+            console.error("Error returning rental:", xhr.responseText);
+        }
+    };
+
+    var data = {
+        lic_plate: licensePlate,
+        total_cost: totalCost, // Include the total cost in the data sent to the server
+        is_returned: true,
+        duration: dur,
+        rental_date: rentdate
+    };
+
+    xhr.send(JSON.stringify(data));
+}
+
+

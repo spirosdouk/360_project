@@ -152,7 +152,7 @@ public class EditVehicleTable {
         ResultSet rs = null;
 
         try {
-            String query = "SELECT * FROM vehicles WHERE type = ? AND isRented = 'false'";
+            String query = "SELECT * FROM vehicles WHERE type = ? AND isRented = 'false' AND is_damaged = 'false'";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, vehicleType);
             rs = pstmt.executeQuery();
