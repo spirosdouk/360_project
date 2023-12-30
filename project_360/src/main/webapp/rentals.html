@@ -72,28 +72,20 @@
         This section allows the user to report issues with the rented vehicles.
       </p>
       <form id="issueForm">
-        <!-- Form content: Inputs for reporting issues -->
-        <div class="mb-3">
-          <label for="vehicleId" class="form-label">Vehicle ID</label>
-          <input
-            type="text"
-            class="form-control"
-            id="vehicleId"
-            placeholder="Enter Vehicle ID"
-          />
-        </div>
-        <div class="mb-3">
-          <label for="issueDescription" class="form-label"
-            >Issue Description</label
-          >
-          <textarea
-            class="form-control"
-            id="issueDescription"
-            rows="3"
-          ></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit Report</button>
+          <div class="mb-3">
+              <label for="licensePlate" class="form-label">License Plate</label>
+              <input type="text" class="form-control" id="licensePlate" placeholder="Enter License Plate"/>
+          </div>
+          <div class="mb-3">
+              <label for="issueType" class="form-label">Issue Type</label>
+              <select class="form-control" id="issueType">
+                  <option value="vehicleDamage">Vehicle Damage</option>
+                  <option value="accidentReport">Accident Report</option>
+              </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit Report</button>
       </form>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

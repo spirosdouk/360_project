@@ -224,9 +224,12 @@ function fetchUserRentals() {
     xhr.send();
 }
 
+let Rentals = [];
+
 function displayUserRentals(rentals) {
     const tableBody = document.getElementById('currentRentalsTable').getElementsByTagName('tbody')[0];
     tableBody.innerHTML = ''; // Clear existing rows
+    Rentals = rentals;
 
     rentals.forEach(rental=>{
         const row = tableBody.insertRow();
@@ -279,5 +282,62 @@ function returnRental(licensePlate, totalCost, rentdate, dur) {
 
     xhr.send(JSON.stringify(data));
 }
+
+document.getElementById('issueForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const licensePlate = document.getElementById('licensePlate').value;
+    const issueType = document.getElementById('issueType').value;
+
+    // Assuming 'Rentals' is a global array containing the rental data
+    const rentalRecord = Rentals.find(rental=>rental.lic_plate===licensePlate);
+
+    if (rentalRecord) {
+        // Extract information from the rental record
+        const hasInsurance = rentalRecord.has_insurance;
+        const totalCost = rentalRecord.total_cost;
+        const username = rentalRecord.username;
+        const daily_cost = rentalRecord.daily_cost;
+        const rental_date = rentalRecord.rental_date;
+        const duration = rentalRecord.duration;
+
+        // Send data to the server
+        fetch('/project_360/ReturnRentalServlet', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({licensePlate, issueType, hasInsurance, totalCost, username, daily_cost, rental_date, duration}),
+        })
+                .then(response=>response.json())
+                .then(data=>{
+                    // Handle response data
+                    if (data.status==="success") {
+                        let message = "Report submitted successfully.";
+
+                        // Check for additional charges
+                        if (data.chargeAmount) {
+                            message += "\nAdditional charge due to accident: $"+data.chargeAmount;
+                        }
+
+                        // Check for assigned vehicle
+                        if (data.newVehicleLicensePlate) {
+                            message += "\nYour new vehicle license plate: "+data.newVehicleLicensePlate;
+                        }
+
+                        alert(message);
+                    } else {
+                        // Handle any other statuses
+                        alert("Failed to process your request.");
+                    }
+                })
+                .catch(error=>{
+                    console.error('Error:', error);
+                    alert("An error occurred while processing your request.");
+                });
+    } else {
+        alert("License plate not found in your rentals.");
+    }
+});
 
 

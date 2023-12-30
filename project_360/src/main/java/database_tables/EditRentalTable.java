@@ -100,26 +100,26 @@ public class EditRentalTable {
         return null;
     }
 
-//    public void updateRentalReturnStatus(String licPlate, boolean isReturned) throws SQLException, ClassNotFoundException {
-//        Connection con = DB_Connection.getConnection();
-//        PreparedStatement pstmt = null;
-//        try {
-//            String updateQuery = "UPDATE rentals SET is_returned = ? WHERE lic_plate = ?";
-//            pstmt = con.prepareStatement(updateQuery);
-//            pstmt.setString(1, isReturned ? "true" : "false");
-//            pstmt.setString(2, licPlate);
-//            pstmt.executeUpdate();
-//        } catch (SQLException e) {
-//            System.err.println("SQL Exception: " + e.getMessage());
-//        } finally {
-//            if(pstmt != null) {
-//                pstmt.close();
-//            }
-//            if(con != null) {
-//                con.close();
-//            }
-//        }
-//    }
+    public void updateRentalReturnStatus(String licPlate, boolean isReturned) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        PreparedStatement pstmt = null;
+        try {
+            String updateQuery = "UPDATE rentals SET is_returned = ? WHERE lic_plate = ?";
+            pstmt = con.prepareStatement(updateQuery);
+            pstmt.setString(1, isReturned ? "true" : "false");
+            pstmt.setString(2, licPlate);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        } finally {
+            if(pstmt != null) {
+                pstmt.close();
+            }
+            if(con != null) {
+                con.close();
+            }
+        }
+    }
     public void updateRentalReturnStatus(String lic_plate, double newTotalCost, String isReturned) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         try {
@@ -137,7 +137,6 @@ public class EditRentalTable {
             }
         }
     }
-
 
     public void createRentalTable() throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();

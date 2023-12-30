@@ -11,7 +11,6 @@ package mainClasses;
 public class Vehicle {
     int vehicle_id, range_km, rented_count, total_days, daily_rental_cost, daily_insurance_cost;
     String brand, model, color, type, is_damaged, lic_plate, sub_type, isRented;
-
     // Setter methods
     public void setVehicle_id(int vehicle_id) {
         this.vehicle_id = vehicle_id;

@@ -56,4 +56,5 @@ public class RentalServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server error occurred while adding new rental");
         }
     }
+
 }

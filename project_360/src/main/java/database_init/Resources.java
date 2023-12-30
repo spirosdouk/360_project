@@ -38,11 +38,11 @@ public class Resources {
     static Subtype st3 = new Subtype("Van", 9);
     static Subtype st4 = new Subtype("Cabrio", 4);
 
-    static Maintenance maint0 = new Maintenance(1, 50, "2023-05-05", "2023-05-06", "maintenance", "finished");
-    static Maintenance maint1 = new Maintenance(2, 50, "2023-06-05", "2023-06-06", "maintenance", "finished");
-    static Maintenance maint2 = new Maintenance(3, 150, "2023-08-15", "2023-08-18", "repair", "finished");
-    static Maintenance maint3 = new Maintenance(1, 50, "2023-12-05", "2023-12-06", "maintenance", "finished");
-    static Maintenance maint4 = new Maintenance(5, 250, "2024-01-18", "2024-01-21", "repair", "ongoing");
+    static Maintenance maint0 = new Maintenance("AD4152", 50, "2023-05-05", "2023-05-06", "maintenance", "finished");
+    static Maintenance maint1 = new Maintenance("b1", 50, "2023-06-05", "2023-06-06", "maintenance", "finished");
+    static Maintenance maint2 = new Maintenance("JD4522", 150, "2023-08-15", "2023-08-18", "repair", "finished");
+    static Maintenance maint3 = new Maintenance("AD4152", 50, "2023-12-05", "2023-12-06", "maintenance", "finished");
+    static Maintenance maint4 = new Maintenance("FK5161", 250, "2024-01-18", "2024-01-21", "repair", "ongoing");
 
     static Rental rental0 = new Rental("mitsos", 995566777, "AD4152", 5, 45, "2023-04-30", "true", "true", 0);
     static Rental rental1 = new Rental("nina", 0, "s1", 5, 45, "2023-07-03", "true", "false", 0);

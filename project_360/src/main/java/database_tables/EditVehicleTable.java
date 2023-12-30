@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mainClasses.Vehicle;
+import mainClasses.Rental;
 import java.sql.PreparedStatement;
 
 /**
@@ -78,14 +79,34 @@ public class EditVehicleTable {
             }
         }
     }
-
+    public void updateDamageStatus(String lic_plate, boolean isDamaged) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        PreparedStatement pstmt = null;
+        System.out.println(lic_plate);
+        try {
+            String updateQuery = "UPDATE vehicles SET is_damaged = ? WHERE lic_plate = ?";
+            pstmt = con.prepareStatement(updateQuery);
+            pstmt.setString(1, isDamaged ? "true" : "false");
+            pstmt.setString(2, lic_plate);
+            pstmt.executeUpdate();
+            System.out.println("# Vehicle is_damaged status updated in the database.");
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        } finally {
+            if(pstmt != null) {
+                pstmt.close();
+            }
+            if(con != null) {
+                con.close();
+            }
+        }
+    }
     public void createVehicleTable() throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
 
         String query = "CREATE TABLE vehicles "
-                + "(vehicle_id INTEGER not NULL AUTO_INCREMENT, "
-                + "    brand VARCHAR(30) not null,"
+                + "    (brand VARCHAR(30) not null,"
                 + "    model VARCHAR(30) not null,"
                 + "    color VARCHAR(30) not null,"
                 + "    type VARCHAR(15) not null,"
@@ -99,7 +120,7 @@ public class EditVehicleTable {
                 + "    isRented VARCHAR(15) not null," // Add the new column here
                 + "    subtype_name VARCHAR(30),"
                 + "    FOREIGN KEY (subtype_name) REFERENCES subtype(subtype_name),"
-                + " PRIMARY KEY (vehicle_id))";
+                + " PRIMARY KEY (lic_plate))";
         stmt.execute(query);
         stmt.close();
     }
@@ -144,6 +165,37 @@ public class EditVehicleTable {
             Logger.getLogger(EditVehicleTable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public String getTypeOfVehicle(String licence) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String vehicleType = null;
+
+        try {
+            String query = "SELECT type FROM vehicles WHERE lic_plate = ?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, licence);
+            rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                vehicleType = rs.getString("type");
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        } finally {
+            if(rs != null) {
+                rs.close();
+            }
+            if(pstmt != null) {
+                pstmt.close();
+            }
+            if(con != null) {
+                con.close();
+            }
+        }
+
+        return vehicleType;
+    }
 
     public ArrayList<Vehicle> getAvailableVehiclesByType(String vehicleType) throws SQLException, ClassNotFoundException {
         ArrayList<Vehicle> vehicles = new ArrayList<>();
@@ -179,4 +231,39 @@ public class EditVehicleTable {
 
         return vehicles;
     }
+
+    public Vehicle assignNewVehicle(String originalLicencePlate, String username, int drivLic, int duration,
+            int dailyCost, String rentalDate, String isReturned, String hasInsurance,
+            int carChange) throws SQLException, ClassNotFoundException {
+        // Get the type of the original vehicle
+        String vehicleType = getTypeOfVehicle(originalLicencePlate);
+
+        // Find available vehicles of the same type
+        ArrayList<Vehicle> availableVehicles = getAvailableVehiclesByType(vehicleType);
+
+        // Assuming you'll assign the first available vehicle (you can implement other selection logic)
+    if(!availableVehicles.isEmpty()) {
+        Vehicle newVehicle = availableVehicles.get(0);
+        String newLicensePlate = newVehicle.getLic_plate(); // Assuming getLicPlate() method exists
+
+        // Create a new Rental instance
+        Rental newRental = new Rental(username, drivLic, newLicensePlate, duration, dailyCost,
+                rentalDate, isReturned, hasInsurance, carChange);
+
+        // Convert Rental object to JSON and add to database
+        EditRentalTable rentalTable = new EditRentalTable();
+        String rentalJson = rentalTable.RentalToJSON(newRental); // Assuming RentalToJSON method exists
+        rentalTable.addRentalFromJSON(rentalJson);
+
+        // Optionally, update the vehicle's status as rented
+        updateVehicleRentalStatus(newVehicle.getLic_plate(), true);
+
+        return newVehicle; // return the assigned vehicle
+    } else {
+
+            // No available vehicles of the same type
+            return null;
+        }
+    }
+
 }

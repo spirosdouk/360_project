@@ -6,9 +6,10 @@ package mainClasses;
  */
 public class Rental {
 
-    int rental_id, driv_lic, duration, daily_cost, car_change;
+    int rental_id, duration, daily_cost, car_change;
     String rental_date, is_returned, has_insurance, username, lic_plate;
     double total_cost;
+    int driv_lic;
     // Setter methods
     public void setRental_id(int rental_id) {
         this.rental_id = rental_id;

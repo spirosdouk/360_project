@@ -155,6 +155,17 @@ public class EditUserTable {
         }
         return null;
     }
+    public int getUserDrivingLicence(String username) throws SQLException, ClassNotFoundException {
+        EditUserTable userTable = new EditUserTable();
+        User user = userTable.getUserByUsername(username);
+
+        if(user != null) {
+            return (int) user.getDriv_lic(); // Assuming getDriv_lic() method exists in your User class
+        } else {
+            // Handle the case where the user is not found
+            throw new SQLException("User not found");
+        }
+    }
 
     public void updateUserField(String username, String field, String value) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();

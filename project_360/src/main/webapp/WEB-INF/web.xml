@@ -12,6 +12,10 @@
         <servlet-name>ReturnRentalServlet</servlet-name>
         <servlet-class>ajax.calls.ReturnRentalServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DateUtil</servlet-name>
+        <servlet-class>mainClasses.DateUtil</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetVehicles</servlet-name>
         <url-pattern>/GetVehicles</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>ReturnRentalServlet</servlet-name>
         <url-pattern>/ReturnRentalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DateUtil</servlet-name>
+        <url-pattern>/DateUtil</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
