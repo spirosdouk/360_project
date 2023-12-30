@@ -1,7 +1,7 @@
 var vehicles = [];
 var selectedVehicleLicPlate = null;
 function handleSearchSubmit(event) {
-    var user = localStorage.getItem('user'); // Retrieve username from localStorage
+    var user = localStorage.getItem('user');
     var age = localStorage.getItem('age');
     var drivLic = localStorage.getItem('driv_lic');
     console.log("User: ", user, "Age: ", age, "Driving License: ", drivLic);
@@ -14,7 +14,6 @@ function handleSearchSubmit(event) {
 
     xhr.onreadystatechange = function () {
         if (this.readyState===4&&this.status===200) {
-            // Parse the response and store it in the global vehicles array
             vehicles = JSON.parse(this.responseText);
 
             const resultsDiv = document.getElementById('searchResults');
@@ -49,7 +48,7 @@ function showRentalModal(licensePlate) {
     const vehicle = vehicles.find(v=>v.lic_plate===licensePlate);
     if (!vehicle)
         return;
-    // Retrieve user's age and driving license number from localStorage
+
     const userAge = parseInt(localStorage.getItem('age'), 10);
     const userDrivingLic = localStorage.getItem('driv_lic');
 
@@ -105,26 +104,23 @@ function confirmRental() {
 
     if (!fromDateInput.value||!toDateInput.value) {
         alert("Please select both 'From Date' and 'To Date'.");
-        return; // Stop the function if validation fails
+        return;
     }
     if (isNaN(fromDate.getTime())||isNaN(toDate.getTime())) {
         alert("Invalid dates. Please enter valid 'From Date' and 'To Date'.");
-        return; // Stop the function if validation fails
+        return;
     }
     if (toDate<=fromDate) {
         alert("'To Date' must be after 'From Date'.");
-        return; // Stop the function if validation fails
+        return;
     }
 
     const includeInsurance = document.getElementById('modalInsuranceCheck').checked;
     const licensePlate = selectedVehicleLicPlate;
-
     const updateVehicleData = {
         lic_plate: licensePlate,
         isRented: "true"
     };
-
-
     console.log("updateVehicleData:", updateVehicleData);
 
     var xhrVehicleUpdate = new XMLHttpRequest();
@@ -136,17 +132,15 @@ function confirmRental() {
             console.log("Vehicle rental status updated successfully");
 
             const vehicle = vehicles.find(v=>v.lic_plate===selectedVehicleLicPlate);
-
-            const duration = (toDate-fromDate)/(1000*3600*24); // Calculate duration in days
+            const duration = (toDate-fromDate)/(1000*3600*24);
             const dailyCost = vehicle.daily_rental_cost+(includeInsurance?vehicle.daily_insurance_cost:0);
-            const totalCost = dailyCost*duration; // Total cost for the rental period
-
+            const totalCost = dailyCost*duration;
 
             const newRentalData = {
                 username: localStorage.getItem('user'),
                 lic_plate: licensePlate,
                 driv_lic: localStorage.getItem('driv_lic'),
-                duration: (toDate-fromDate)/(1000*3600*24), // Calculate duration in days
+                duration: (toDate-fromDate)/(1000*3600*24),
                 daily_cost: dailyCost,
                 total_cost: totalCost,
                 rental_date: fromDateInput.value,
@@ -154,7 +148,6 @@ function confirmRental() {
                 has_insurance: includeInsurance?"true":"false",
                 car_change: 0
             };
-
             console.log("newRentalData:", newRentalData);
 
             var xhrRentalCreation = new XMLHttpRequest();
@@ -164,13 +157,14 @@ function confirmRental() {
             xhrRentalCreation.onload = function () {
                 if (xhrRentalCreation.status===200) {
                     console.log("Rental transaction recorded successfully");
-                    // Hide the modal after successful operation
                     var myModalEl = document.getElementById('rentalModal');
                     var modal = bootstrap.Modal.getInstance(myModalEl);
                     modal.hide();
+                    alert("Rental transaction recorded successfully");
+
+                    window.location.reload();
                 } else {
                     console.error("Error creating rental transaction:", xhrRentalCreation.responseText);
-                    // Revert vehicle status to not rented
                     revertVehicleStatus(licensePlate);
                 }
             };
@@ -181,12 +175,6 @@ function confirmRental() {
     };
     xhrVehicleUpdate.send(JSON.stringify(updateVehicleData));
 
-
-    console.log('Rental confirmed');
-
-
-
-    // Hide the modal after validation and confirmation
     var myModalEl = document.getElementById('rentalModal');
     var modal = bootstrap.Modal.getInstance(myModalEl);
     modal.hide();
@@ -274,7 +262,7 @@ function returnRental(licensePlate, totalCost, rentdate, dur) {
 
     var data = {
         lic_plate: licensePlate,
-        total_cost: totalCost, // Include the total cost in the data sent to the server
+        total_cost: totalCost,
         is_returned: true,
         duration: dur,
         rental_date: rentdate
@@ -288,12 +276,9 @@ document.getElementById('issueForm').addEventListener('submit', function (event)
 
     const licensePlate = document.getElementById('licensePlate').value;
     const issueType = document.getElementById('issueType').value;
-
-    // Assuming 'Rentals' is a global array containing the rental data
     const rentalRecord = Rentals.find(rental=>rental.lic_plate===licensePlate);
 
     if (rentalRecord) {
-        // Extract information from the rental record
         const hasInsurance = rentalRecord.has_insurance;
         const totalCost = rentalRecord.total_cost;
         const username = rentalRecord.username;
@@ -301,7 +286,6 @@ document.getElementById('issueForm').addEventListener('submit', function (event)
         const rental_date = rentalRecord.rental_date;
         const duration = rentalRecord.duration;
 
-        // Send data to the server
         fetch('/project_360/ReturnRentalServlet', {
             method: 'PUT',
             headers: {
@@ -311,23 +295,19 @@ document.getElementById('issueForm').addEventListener('submit', function (event)
         })
                 .then(response=>response.json())
                 .then(data=>{
-                    // Handle response data
                     if (data.status==="success") {
                         let message = "Report submitted successfully.";
-
                         // Check for additional charges
                         if (data.chargeAmount) {
                             message += "\nAdditional charge due to accident: $"+data.chargeAmount;
                         }
-
                         // Check for assigned vehicle
                         if (data.newVehicleLicensePlate) {
                             message += "\nYour new vehicle license plate: "+data.newVehicleLicensePlate;
                         }
-
                         alert(message);
+                        window.location.reload();
                     } else {
-                        // Handle any other statuses
                         alert("Failed to process your request.");
                     }
                 })

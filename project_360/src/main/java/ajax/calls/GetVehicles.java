@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package ajax.calls;
 
 import mainClasses.Vehicle;
@@ -51,8 +47,6 @@ public class GetVehicles extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Read request data
-
         BufferedReader reader = request.getReader();
         String requestData = reader.lines().collect(Collectors.joining());
         Gson gson = new Gson();
@@ -60,7 +54,6 @@ public class GetVehicles extends HttpServlet {
 
         EditVehicleTable vehicleTable = new EditVehicleTable();
         try {
-            // Update vehicle rental status
             vehicleTable.updateVehicleRentalStatus(vehicleUpdate.getLic_plate(), "true".equals(vehicleUpdate.getIsRented()));
             System.out.println("vehicleUpdate");
 

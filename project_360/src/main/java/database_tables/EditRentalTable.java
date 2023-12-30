@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package database_tables;
 
 import com.google.gson.Gson;
@@ -125,9 +121,9 @@ public class EditRentalTable {
         try {
             String updateQuery = "UPDATE rentals SET total_cost = ?, is_returned = ? WHERE lic_plate = ?";
             PreparedStatement pstmt = con.prepareStatement(updateQuery);
-            pstmt.setDouble(1, newTotalCost); // Update total_cost
-            pstmt.setString(2, isReturned);  // Update is_returned
-            pstmt.setString(3, lic_plate);    // Where lic_plate matches
+            pstmt.setDouble(1, newTotalCost);
+            pstmt.setString(2, isReturned);
+            pstmt.setString(3, lic_plate);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
@@ -186,7 +182,6 @@ public class EditRentalTable {
             stmt.executeUpdate(insertQuery);
             System.out.println("# The rental was successfully added in the database.");
 
-            /* Get the member id from the database and set it to the member */
             stmt.close();
 
         } catch (SQLException ex) {

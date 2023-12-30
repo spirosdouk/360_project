@@ -34,7 +34,7 @@ public class CheckUsernameServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try (PrintWriter out = response.getWriter()) {
-            // Modified to return a boolean field 'exists'
+            // Return a boolean field 'exists'
             out.print("{\"exists\": " + (user != null) + "}");
         }
     }
@@ -42,7 +42,6 @@ public class CheckUsernameServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Read and parse the request data
         BufferedReader reader = request.getReader();
         String requestData = reader.lines().collect(Collectors.joining());
         Gson gson = new Gson();

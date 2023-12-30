@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package database_tables;
 
 import com.google.gson.Gson;
@@ -19,7 +15,7 @@ import java.sql.PreparedStatement;
 
 /**
  *
- * @author dimos
+ * @author spiros
  */
 public class EditVehicleTable {
 
@@ -235,32 +231,26 @@ public class EditVehicleTable {
     public Vehicle assignNewVehicle(String originalLicencePlate, String username, int drivLic, int duration,
             int dailyCost, String rentalDate, String isReturned, String hasInsurance,
             int carChange) throws SQLException, ClassNotFoundException {
-        // Get the type of the original vehicle
         String vehicleType = getTypeOfVehicle(originalLicencePlate);
 
-        // Find available vehicles of the same type
         ArrayList<Vehicle> availableVehicles = getAvailableVehiclesByType(vehicleType);
+        // Assuming assign the first available vehicle
+        if(!availableVehicles.isEmpty()) {
+            Vehicle newVehicle = availableVehicles.get(0);
+            String newLicensePlate = newVehicle.getLic_plate(); // Assuming getLicPlate() method exists
 
-        // Assuming you'll assign the first available vehicle (you can implement other selection logic)
-    if(!availableVehicles.isEmpty()) {
-        Vehicle newVehicle = availableVehicles.get(0);
-        String newLicensePlate = newVehicle.getLic_plate(); // Assuming getLicPlate() method exists
+            Rental newRental = new Rental(username, drivLic, newLicensePlate, duration, dailyCost,
+                    rentalDate, isReturned, hasInsurance, carChange);
 
-        // Create a new Rental instance
-        Rental newRental = new Rental(username, drivLic, newLicensePlate, duration, dailyCost,
-                rentalDate, isReturned, hasInsurance, carChange);
+            // Convert Rental object to JSON and add to database
+            EditRentalTable rentalTable = new EditRentalTable();
+            String rentalJson = rentalTable.RentalToJSON(newRental); // Assuming RentalToJSON method exists
+            rentalTable.addRentalFromJSON(rentalJson);
 
-        // Convert Rental object to JSON and add to database
-        EditRentalTable rentalTable = new EditRentalTable();
-        String rentalJson = rentalTable.RentalToJSON(newRental); // Assuming RentalToJSON method exists
-        rentalTable.addRentalFromJSON(rentalJson);
+            updateVehicleRentalStatus(newVehicle.getLic_plate(), true);
 
-        // Optionally, update the vehicle's status as rented
-        updateVehicleRentalStatus(newVehicle.getLic_plate(), true);
-
-        return newVehicle; // return the assigned vehicle
-    } else {
-
+            return newVehicle; // return the assigned vehicle
+        } else {
             // No available vehicles of the same type
             return null;
         }

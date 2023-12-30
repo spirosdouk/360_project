@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package ajax.calls;
 
 import database_tables.EditRentalTable;
@@ -50,7 +46,7 @@ public class RentalServlet extends HttpServlet {
 
         try {
             rentalTable.addRentalFromJSON(rentalDataJson);
-            response.setStatus(HttpServletResponse.SC_OK); // Successful operation
+            response.setStatus(HttpServletResponse.SC_OK);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server error occurred while adding new rental");

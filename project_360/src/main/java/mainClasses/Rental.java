@@ -10,7 +10,7 @@ public class Rental {
     String rental_date, is_returned, has_insurance, username, lic_plate;
     double total_cost;
     int driv_lic;
-    // Setter methods
+
     public void setRental_id(int rental_id) {
         this.rental_id = rental_id;
     }
@@ -55,7 +55,6 @@ public class Rental {
         this.car_change = car_change;
     }
 
-    // Getter methods
     public int getDaily_cost() {
         return daily_cost;
     }

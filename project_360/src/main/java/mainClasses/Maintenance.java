@@ -2,14 +2,13 @@ package mainClasses;
 
 /**
  *
- * @author spiros
+ * @author dimos
  */
 public class Maintenance {
 
     int maintenance_id, cost;
     String start_date, end_date, maint_type, status, lic_plate;
 
-    // Setter methods
     public void setMaintenance_id(int maintenance_id) {
         this.maintenance_id = maintenance_id;
     }
@@ -38,7 +37,6 @@ public class Maintenance {
         this.status = status;
     }
 
-    // Getter methods
     public int getMaintenance_id() {
         return maintenance_id;
     }

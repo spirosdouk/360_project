@@ -1,5 +1,4 @@
 package mainClasses;
-
 /**
  *
  * @author dimos
@@ -8,7 +7,7 @@ public class User {
     int user_id;
     String password, name, address, birthdate, username;
     long credit_card, driv_lic;
-    // Setter methods
+
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
@@ -41,7 +40,6 @@ public class User {
         this.username = username;
     }
 
-    // Getter methods
     public String getUsername() {
         return username;
     }

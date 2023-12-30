@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package mainClasses;
-
 /**
  *
  * @author dimos
@@ -11,7 +6,7 @@ package mainClasses;
 public class Vehicle {
     int vehicle_id, range_km, rented_count, total_days, daily_rental_cost, daily_insurance_cost;
     String brand, model, color, type, is_damaged, lic_plate, sub_type, isRented;
-    // Setter methods
+
     public void setVehicle_id(int vehicle_id) {
         this.vehicle_id = vehicle_id;
     }
@@ -64,7 +59,6 @@ public class Vehicle {
         this.sub_type = sub_type;
     }
 
-    // Getter methods
     public String getSub_type() {
         return sub_type;
     }
