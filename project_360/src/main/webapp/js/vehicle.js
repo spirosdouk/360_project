@@ -1,5 +1,7 @@
 var vehicles = [];
 var selectedVehicleLicPlate = null;
+
+
 function handleSearchSubmit(event) {
     var user = localStorage.getItem('user');
     var age = localStorage.getItem('age');
@@ -87,6 +89,16 @@ function showRentalModal(licensePlate) {
                 Include Insurance
             </label>
         </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="modalDifferentDriver">
+            <label class="form-check-label" for="modalDifferentDriver">
+                Different Driver
+            </label>
+        </div>
+        <div id="drivingLicenceInput">
+            <label for="drivingLicence">Enter Driving License Number:</label>
+            <input type="number" class="form-control" id="drivingLicenceField" disabled />
+        </div>
     `;
 
     var myModal = new bootstrap.Modal(document.getElementById('rentalModal'), {
@@ -94,7 +106,12 @@ function showRentalModal(licensePlate) {
     });
     myModal.show();
 
+    document.getElementById('modalDifferentDriver').addEventListener('change', function() {
+        var inputField = document.getElementById('drivingLicenceField');
+        inputField.disabled = !this.checked;
+    });
 }
+
 
 function confirmRental() {
     const fromDateInput = document.getElementById('modalFromDate');
@@ -179,6 +196,8 @@ function confirmRental() {
     var modal = bootstrap.Modal.getInstance(myModalEl);
     modal.hide();
 }
+
+
 function revertVehicleStatus(licensePlate) {
     const revertVehicleData = {
         lic_plate: licensePlate,
@@ -196,6 +215,8 @@ function revertVehicleStatus(licensePlate) {
     };
     xhrVehicleRevert.send(JSON.stringify(revertVehicleData));
 }
+
+
 function fetchUserRentals() {
     var user = localStorage.getItem('user');
     var xhr = new XMLHttpRequest();
