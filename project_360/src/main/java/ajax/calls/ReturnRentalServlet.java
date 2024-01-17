@@ -131,7 +131,7 @@ public class ReturnRentalServlet extends HttpServlet {
                     Maintenance newMaintenance = maintanace.createMaintenance(licensePlate, issueType, damagecost);
                     maintanace.addNewMaintenance(newMaintenance);
 
-                    int carChange = 1;//licence plate
+                    String carChange = "none";//licence plate
                     int drivingLicence = userTable.getUserDrivingLicence(username);
                     assignedVehicle = vehicleTable.assignNewVehicle(newMaintenance.getLic_plate(), username, drivingLicence, duration,
                             0, rentalDate, "false", insurance, carChange);
@@ -146,7 +146,7 @@ public class ReturnRentalServlet extends HttpServlet {
                     Maintenance newMaintenance = maintanace.createMaintenance(licensePlate, issueType, damagecost);
                     maintanace.addNewMaintenance(newMaintenance);
 
-                    int carChange = 1;
+                    String carChange = "none";//licence plate
                     int drivingLicence = userTable.getUserDrivingLicence(username);
                     assignedVehicle = vehicleTable.assignNewVehicle(newMaintenance.getLic_plate(), username, drivingLicence, duration,
                             0, rentalDate, "false", insurance, carChange);
@@ -162,7 +162,7 @@ public class ReturnRentalServlet extends HttpServlet {
                 Maintenance newMaintenance = maintanace.createMaintenance(licensePlate, issueType, damagecost);
                 maintanace.addNewMaintenance(newMaintenance);
 
-                int carChange = 1;
+                String carChange = "none";//licence plate
                 int drivingLicence = userTable.getUserDrivingLicence(username);
                 assignedVehicle = vehicleTable.assignNewVehicle(newMaintenance.getLic_plate(), username, drivingLicence, duration,
                         0, rentalDate, "false", insurance, carChange);
@@ -171,6 +171,7 @@ public class ReturnRentalServlet extends HttpServlet {
                 vehicleTable.updateDamageStatus(licensePlate, true);
             }
             if(assignedVehicle != null) {
+                rentalTable.updateCarChange(licensePlate, assignedVehicle.getLic_plate());
                 responseJson.put("newVehicleLicensePlate", assignedVehicle.getLic_plate());
             }
             responseJson.put("status", "success");

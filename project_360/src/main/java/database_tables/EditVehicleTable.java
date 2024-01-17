@@ -75,6 +75,47 @@ public class EditVehicleTable {
             }
         }
     }
+
+    public void updateVehicleRentalStatus_date(String lic_plate, boolean isRented, int additionalDays) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        PreparedStatement pstmt = null;
+        try {
+            // First, get the current total_days from the database
+            String selectQuery = "SELECT total_days FROM vehicles WHERE lic_plate = ?";
+            pstmt = con.prepareStatement(selectQuery);
+            pstmt.setString(1, lic_plate);
+            ResultSet rs = pstmt.executeQuery();
+            int currentTotalDays = 0;
+            if(rs.next()) {
+                currentTotalDays = rs.getInt("total_days");
+            }
+            rs.close();
+            pstmt.close();
+
+            int newTotalDays = currentTotalDays + additionalDays;
+
+            String updateQuery = isRented
+                    ? "UPDATE vehicles SET isRented = ?, total_days = ?, rented_count = rented_count + 1 WHERE lic_plate = ?"
+                    : "UPDATE vehicles SET isRented = ?, total_days = ? WHERE lic_plate = ?";
+
+            pstmt = con.prepareStatement(updateQuery);
+            pstmt.setString(1, isRented ? "true" : "false");
+            pstmt.setInt(2, newTotalDays); // Set the new total_days
+            pstmt.setString(3, lic_plate);
+            pstmt.executeUpdate();
+            System.out.println("# Vehicle rental status updated in the database.");
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        } finally {
+            if(pstmt != null) {
+                pstmt.close();
+            }
+            if(con != null) {
+                con.close();
+            }
+        }
+    }
+
     public void updateDamageStatus(String lic_plate, boolean isDamaged) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         PreparedStatement pstmt = null;
@@ -97,6 +138,7 @@ public class EditVehicleTable {
             }
         }
     }
+
     public void createVehicleTable() throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
@@ -230,7 +272,7 @@ public class EditVehicleTable {
 
     public Vehicle assignNewVehicle(String originalLicencePlate, String username, int drivLic, int duration,
             int dailyCost, String rentalDate, String isReturned, String hasInsurance,
-            int carChange) throws SQLException, ClassNotFoundException {
+            String carChange) throws SQLException, ClassNotFoundException {
         String vehicleType = getTypeOfVehicle(originalLicencePlate);
 
         ArrayList<Vehicle> availableVehicles = getAvailableVehiclesByType(vehicleType);

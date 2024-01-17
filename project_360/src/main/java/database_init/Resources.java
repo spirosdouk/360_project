@@ -40,7 +40,7 @@ public class Resources {
     static Maintenance maint3 = new Maintenance("AD4152", 50, "2023-12-05", "2023-12-06", "maintenance", "finished");
     static Maintenance maint4 = new Maintenance("FK5161", 250, "2024-01-18", "2024-01-21", "repair", "ongoing");
 
-    static Rental rental0 = new Rental("mitsos", 995566777, "AD4152", 5, 45, "2023-04-30", "true", "true", 0);
-    static Rental rental1 = new Rental("nina", 0, "s1", 5, 45, "2023-07-03", "true", "false", 0);
+    static Rental rental0 = new Rental("mitsos", 995566777, "AD4152", 5, 45, "2023-04-30", "true", "true", "none");
+    static Rental rental1 = new Rental("nina", 0, "s1", 5, 45, "2023-07-03", "true", "false", "none");
 
 }

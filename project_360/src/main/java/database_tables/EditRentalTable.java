@@ -116,6 +116,29 @@ public class EditRentalTable {
             }
         }
     }
+
+    public void updateCarChange(String currentLicPlate, String newLicPlate) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        PreparedStatement pstmt = null;
+        System.out.println("meowmeow");
+        try {
+            String updateQuery = "UPDATE rentals SET new_carplate = ? WHERE lic_plate = ?";
+            pstmt = con.prepareStatement(updateQuery);
+            pstmt.setString(1, newLicPlate);
+            pstmt.setString(2, currentLicPlate);
+            pstmt.executeUpdate();
+            System.out.println("# rentals new_carplate status updated in the database.");
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        } finally {
+            if(pstmt != null) {
+                pstmt.close();
+            }
+            if(con != null) {
+                con.close();
+            }
+        }
+    }
     public void updateRentalReturnStatus(String lic_plate, double newTotalCost, String isReturned) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         try {
@@ -148,7 +171,7 @@ public class EditRentalTable {
                 + " total_cost DOUBLE not NULL, "
                 + " is_returned VARCHAR(15) not NULL, "
                 + " has_insurance VARCHAR(15) not NULL, "
-                + " car_change VARCHAR(15) , "
+                + " new_carplate VARCHAR(15) , "
                 + "FOREIGN KEY (lic_plate) REFERENCES vehicles(lic_plate), "
                 + "FOREIGN KEY (username) REFERENCES users(username), "
                 + " PRIMARY KEY (rental_id))";
@@ -164,7 +187,7 @@ public class EditRentalTable {
             Statement stmt = con.createStatement();
 
             String insertQuery = "INSERT INTO "
-                    + " rentals (username, lic_plate, driv_lic, duration, daily_cost, total_cost, rental_date, is_returned, has_insurance, car_change)"
+                    + " rentals (username, lic_plate, driv_lic, duration, daily_cost, total_cost, rental_date, is_returned, has_insurance, new_carplate)"
                     + " VALUES ("
                     + "'" + _rent.getUsername() + "',"
                     + "'" + _rent.getLic_plate() + "',"

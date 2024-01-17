@@ -47,6 +47,7 @@ public class GetVehicles extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("jumpman");
         BufferedReader reader = request.getReader();
         String requestData = reader.lines().collect(Collectors.joining());
         Gson gson = new Gson();
@@ -54,7 +55,7 @@ public class GetVehicles extends HttpServlet {
 
         EditVehicleTable vehicleTable = new EditVehicleTable();
         try {
-            vehicleTable.updateVehicleRentalStatus(vehicleUpdate.getLic_plate(), "true".equals(vehicleUpdate.getIsRented()));
+            vehicleTable.updateVehicleRentalStatus_date(vehicleUpdate.getLic_plate(), "true".equals(vehicleUpdate.getIsRented()), vehicleUpdate.getTotal_days());
             System.out.println("vehicleUpdate");
 
             response.setStatus(HttpServletResponse.SC_OK); // Successful operation
