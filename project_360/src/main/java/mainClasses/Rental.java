@@ -6,8 +6,8 @@ package mainClasses;
  */
 public class Rental {
 
-    int rental_id, duration, daily_cost, car_change;
-    String rental_date, is_returned, has_insurance, username, lic_plate;
+    int rental_id, duration, daily_cost;
+    String rental_date, is_returned, has_insurance, username, lic_plate, new_carplate;
     double total_cost;
     int driv_lic;
 
@@ -51,8 +51,8 @@ public class Rental {
         this.is_returned = is_returned;
     }
 
-    public void setCar_change(int car_change) {
-        this.car_change = car_change;
+    public void setCar_change(String new_carplate) {
+        this.new_carplate = new_carplate;
     }
 
     public int getDaily_cost() {
@@ -95,11 +95,11 @@ public class Rental {
         return has_insurance;
     }
 
-    public int getCar_change() {
-        return car_change;
+    public String getCar_change() {
+        return new_carplate;
     }
 
-    public Rental(String username, int _driv_lic, String _lic_plate, int _duration, int _daily_cost, String _rental_date, String _is_returned, String _has_insurance, int _car_change) {
+    public Rental(String username, int _driv_lic, String _lic_plate, int _duration, int _daily_cost, String _rental_date, String _is_returned, String _has_insurance, String _car_change) {
         this.username = username;
         this.driv_lic = _driv_lic;
         this.lic_plate = _lic_plate;
@@ -109,6 +109,6 @@ public class Rental {
         this.rental_date = _rental_date;
         this.is_returned = _is_returned;
         this.has_insurance = _has_insurance;
-        this.car_change = _car_change;
+        this.new_carplate = _car_change;
     }
 }

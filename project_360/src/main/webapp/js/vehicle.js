@@ -115,11 +115,13 @@ function confirmRental() {
         return;
     }
 
+    const durationInDays = (toDate-fromDate)/(1000*3600*24);
     const includeInsurance = document.getElementById('modalInsuranceCheck').checked;
     const licensePlate = selectedVehicleLicPlate;
     const updateVehicleData = {
         lic_plate: licensePlate,
-        isRented: "true"
+        isRented: "true",
+        total_days: durationInDays
     };
     console.log("updateVehicleData:", updateVehicleData);
 
@@ -146,7 +148,7 @@ function confirmRental() {
                 rental_date: fromDateInput.value,
                 is_returned: "false",
                 has_insurance: includeInsurance?"true":"false",
-                car_change: 0
+                new_carplate: "none"
             };
             console.log("newRentalData:", newRentalData);
 
@@ -241,7 +243,7 @@ function displayUserRentals(rentals) {
             row.insertCell(7).innerHTML = 'Returned';
         }
         row.insertCell(8).innerHTML = rental.has_insurance;
-        row.insertCell(9).innerHTML = rental.car_change;
+        row.insertCell(9).innerHTML = rental.new_carplate;
     });
 }
 
