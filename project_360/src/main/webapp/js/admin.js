@@ -381,7 +381,7 @@ function parseHistory(data){
             if(date.includes("2023")){
                 table1+= "<tr><td>"+lic_plate+" was rented in: "+date+" | For a total of: "+ tc +"</td></tr>";
                 
-                if(car !== "0")
+                if(car !== "none" && car !== "null")
                     table1+= "<tr><td>"+lic_plate+" was replaced wirh: "+car+"</td></tr>";
                 
                 if(returned === "true")
@@ -391,7 +391,7 @@ function parseHistory(data){
             if(date.includes("2024")){
                 table2+= "<tr><td>"+lic_plate+" was rented in: "+date+" | For a total of: "+ tc +"</td></tr>";
                 
-                if(car !== "0")
+                if(car !== "none" && car !== "null")
                     table2+= "<tr><td>"+lic_plate+" was replaced wirh: "+car+"</td></tr>";
                 
                 if(returned === "true")

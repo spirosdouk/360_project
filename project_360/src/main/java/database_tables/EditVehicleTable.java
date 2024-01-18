@@ -314,7 +314,7 @@ public class EditVehicleTable {
         ResultSet rs = null;
 
         try {
-            String query = "SELECT * FROM vehicles WHERE type = ? AND isRented = 'false' AND is_damaged = 'false'";
+            String query = "SELECT v.* FROM vehicles v LEFT JOIN maintenance m ON v.lic_plate = m.lic_plate AND m.status = 'ongoing' WHERE v.type = ? AND v.isRented = 'false' AND v.is_damaged = 'false' AND m.lic_plate IS NULL;";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, vehicleType);
             rs = pstmt.executeQuery();

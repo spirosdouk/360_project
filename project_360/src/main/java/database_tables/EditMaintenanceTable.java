@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mainClasses.Maintenance;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 /**
  *
  * @author spiros
@@ -90,33 +87,7 @@ public class EditMaintenanceTable {
         stmt.close();
         con.close();
     }
-    /**
-     * Creates a new Maintenance object based on the provided parameters.
-     *
-     * @param licensePlate The license plate of the vehicle.
-     * @param issueType The type of issue (maintenance type).
-     * @param damageCost The cost associated with the maintenance.
-     * @return A new Maintenance object.
-     */
-    public Maintenance createMaintenance(String licensePlate, String issueType, double damageCost) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = new Date(); // Current date
-        String formattedStartDate = dateFormat.format(startDate);
 
-        // Calculate end date based on issue type
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(startDate);
-        if("accidentReport".equals(issueType)) {
-            calendar.add(Calendar.DATE, 3);
-        }
-        Date endDate = calendar.getTime();
-        String formattedEndDate = dateFormat.format(endDate);
-
-        String status = "ongoing";
-        int cost = (int) damageCost;
-
-        return new Maintenance(licensePlate, cost, formattedStartDate, formattedEndDate, issueType, status);
-    }
     public void addNewMaintenance(Maintenance _mainten) throws ClassNotFoundException {
         try {
             Connection con = DB_Connection.getConnection();

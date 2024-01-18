@@ -128,7 +128,7 @@ public class ReturnRentalServlet extends HttpServlet {
                     double damagecost = daily_cost * 20;
                     rentalTable.updateRentalReturnStatus(licensePlate, totalCost, "true");
 
-                    Maintenance newMaintenance = maintanace.createMaintenance(licensePlate, issueType, damagecost);
+                    Maintenance newMaintenance = new Maintenance(licensePlate, "maint");
                     maintanace.addNewMaintenance(newMaintenance);
 
                     String carChange = "none";//licence plate
@@ -139,11 +139,10 @@ public class ReturnRentalServlet extends HttpServlet {
                     vehicleTable.updateVehicleRentalStatus(licensePlate, false);
                     vehicleTable.updateDamageStatus(licensePlate, true);
                 } else {
-                    double damagecost = daily_cost * 20;
                     double chargeAmount = totalCost * 3; // Charge triple the total cost
                     rentalTable.updateRentalReturnStatus(licensePlate, chargeAmount, "true");
 
-                    Maintenance newMaintenance = maintanace.createMaintenance(licensePlate, issueType, damagecost);
+                    Maintenance newMaintenance = new Maintenance(licensePlate, "maint");
                     maintanace.addNewMaintenance(newMaintenance);
 
                     String carChange = "none";//licence plate
@@ -158,8 +157,7 @@ public class ReturnRentalServlet extends HttpServlet {
             } else if("vehicleDamage".equals(issueType)) {
                 rentalTable.updateRentalReturnStatus(licensePlate, totalCost, "true");
 
-                double damagecost = daily_cost * 20;
-                Maintenance newMaintenance = maintanace.createMaintenance(licensePlate, issueType, damagecost);
+                Maintenance newMaintenance = new Maintenance(licensePlate, "repair");
                 maintanace.addNewMaintenance(newMaintenance);
 
                 String carChange = "none";//licence plate

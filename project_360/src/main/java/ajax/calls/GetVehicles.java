@@ -4,6 +4,7 @@ import mainClasses.Vehicle;
 import database_tables.EditVehicleTable;
 import java.sql.SQLException;
 import com.google.gson.Gson;
+import database_tables.EditMaintenanceTable;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,9 +32,11 @@ public class GetVehicles extends HttpServlet {
         String vehicleType = request.getParameter("vehicleType");
 
         EditVehicleTable rentalTable = new EditVehicleTable();
+        EditMaintenanceTable emt = new EditMaintenanceTable();
         ArrayList<Vehicle> rentals;
 
         try {
+            emt.checkMaintenance();
             rentals = rentalTable.getAvailableVehiclesByType(vehicleType);
             Gson gson = new Gson();
             String rentalsJson = gson.toJson(rentals);

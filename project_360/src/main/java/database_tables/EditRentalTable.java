@@ -165,7 +165,7 @@ public class EditRentalTable {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
         String sql = "CREATE TABLE rentals "
-                + "( "
+                + "( rental_id INTEGER not NULL AUTO_INCREMENT,"
                 + " lic_plate VARCHAR(10) not NULL,"
                 + " username  VARCHAR(15) not NULL, "
                 + " driv_lic INTEGER not NULL, "
@@ -177,8 +177,8 @@ public class EditRentalTable {
                 + " has_insurance VARCHAR(15) not NULL, "
                 + " new_carplate VARCHAR(15) , "
                 + "FOREIGN KEY (lic_plate) REFERENCES vehicles(lic_plate), "
-                + "FOREIGN KEY (username) REFERENCES users(username)) ";
-//                + " PRIMARY KEY (rental_id))";
+                + "FOREIGN KEY (username) REFERENCES users(username), "
+                + " PRIMARY KEY (rental_id))";
         stmt.execute(sql);
         stmt.close();
         con.close();
