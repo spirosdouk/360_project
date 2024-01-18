@@ -3,6 +3,7 @@ package database_tables;
 import com.google.gson.Gson;
 import database_connect.DB_Connection;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -143,6 +144,63 @@ public class EditMaintenanceTable {
 
         } catch (SQLException ex) {
             Logger.getLogger(EditRentalTable.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public String getVehicleYearlyRevenue() throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        ResultSet rs;
+        String fields = "MaintenanceYear, M.maint_type, TotalCost";
+        String query = "SELECT YEAR(M.start_date) AS MaintenanceYear, M.maint_type, SUM(M.cost) AS TotalCost FROM maintenance M GROUP BY YEAR(M.start_date), M.maint_type;";
+        rs = stmt.executeQuery(query);
+        StringBuilder resultBuilder = new StringBuilder();
+        while (rs.next()) {
+            // Assuming fields contains comma-separated column names.
+            // This will concatenate the values of these columns for each row.
+            String[] fieldNames = (fields).split(",");
+            for (String field : fieldNames) {
+                resultBuilder.append(rs.getString(field.trim())).append(",");
+            }
+            resultBuilder.append("|"); // New line for each row
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+
+        return resultBuilder.toString();
+    }
+
+    public void checkMaintenance() throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        PreparedStatement selectStmt = null;
+        PreparedStatement updateStmt = null;
+        ResultSet rs = null;
+
+        try {
+            // SQL to find maintenance records where the end date has passed
+            String selectQ = "SELECT maintenance_id FROM maintenance WHERE end_date <= CURRENT_DATE()";
+
+            // Prepare the SELECT statement
+            selectStmt = con.prepareStatement(selectQ);
+            rs = selectStmt.executeQuery();
+
+            // SQL to update the status of maintenance records
+            String updateQ = "UPDATE maintenance SET status = 'finished' WHERE maintenance_id = ?";
+
+            // Prepare the UPDATE statement
+            updateStmt = con.prepareStatement(updateQ);
+
+            // Iterate through the results and update each record
+            while (rs.next()) {
+                int maintenanceId = rs.getInt("maintenance_id");
+
+                updateStmt.setInt(1, maintenanceId);
+                updateStmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

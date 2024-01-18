@@ -19,10 +19,10 @@ import java.sql.PreparedStatement;
  */
 public class EditVehicleTable {
 
-    public void deleteVehicle(String id) throws SQLException, ClassNotFoundException {
+    public void deleteVehicle(String lic_plate) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
-        String delete = "DELETE FROM vehicles WHERE vehicle_id = '" + id + "'";
+        String delete = "DELETE FROM vehicles WHERE lic_plate = '" + lic_plate + "'";
         stmt.executeUpdate(delete);
     }
 
@@ -46,11 +46,83 @@ public class EditVehicleTable {
         return null;
     }
 
-    public void updateVehicleField(String username, String field, String value) throws SQLException, ClassNotFoundException {
+    public void updateVehicleField(String lic_plate, String field, String value) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
-        String update = "UPDATE vehicles SET " + field + "='" + value + "' WHERE username = '" + username + "'";
+        String update = "UPDATE vehicles SET " + field + "='" + value + "' WHERE lic_plate = '" + lic_plate + "'";
         stmt.executeUpdate(update);
+    }
+
+    public String getVehicleFieldForAdmin() throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        ResultSet rs;
+        String fields = "V.lic_plate, V.type, V.brand, V.model, V.isRented, V.is_damaged,";
+        String query = "SELECT " + fields + " CASE WHEN M.status = 'ongoing' THEN 'ongoing' ELSE 'fine' END AS maintenance_status FROM vehicles V LEFT JOIN maintenance M ON V.lic_plate = M.lic_plate AND M.status = 'ongoing'";
+        rs = stmt.executeQuery(query);
+        StringBuilder resultBuilder = new StringBuilder();
+        while (rs.next()) {
+            // Assuming fields contains comma-separated column names.
+            // This will concatenate the values of these columns for each row.
+            String[] fieldNames = (fields + " maintenance_status").split(",");
+            for (String field : fieldNames) {
+                resultBuilder.append(rs.getString(field.trim())).append(",");
+            }
+            resultBuilder.append("|"); // New line for each row
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+
+        return resultBuilder.toString();
+    }
+
+    public String getVehicleRentalDuration() throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        ResultSet rs;
+        String fields = "RentalYear, V.type, MinDuration, MaxDuration, AvgDuration";
+        String query = "SELECT YEAR(R.rental_date) AS RentalYear, V.type, COALESCE(MIN(R.duration), 0) AS MinDuration, COALESCE(MAX(R.duration), 0) AS MaxDuration,  COALESCE(AVG(R.duration), 0) AS AvgDuration FROM vehicles V LEFT JOIN rentals R ON V.lic_plate = R.lic_plate WHERE R.rental_date IS NOT NULL GROUP BY V.type;";
+        rs = stmt.executeQuery(query);
+        StringBuilder resultBuilder = new StringBuilder();
+        while (rs.next()) {
+            // Assuming fields contains comma-separated column names.
+            // This will concatenate the values of these columns for each row.
+            String[] fieldNames = (fields).split(",");
+            for (String field : fieldNames) {
+                resultBuilder.append(rs.getString(field.trim())).append(",");
+            }
+            resultBuilder.append("|"); // New line for each row
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+
+        return resultBuilder.toString();
+    }
+
+    public String getPopularVehicle() throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        ResultSet rs;
+        String fields = "V.lic_plate, V.type, V.brand, V.model, V.rented_count";
+        String query = "SELECT V.lic_plate, V.type, V.brand, V.model, V.rented_count FROM vehicles V INNER JOIN (SELECT type, MAX(rented_count) AS MaxRentedCount FROM vehicles GROUP BY type) AS SubQuery ON V.type = SubQuery.type AND V.rented_count = SubQuery.MaxRentedCount;";
+        rs = stmt.executeQuery(query);
+        StringBuilder resultBuilder = new StringBuilder();
+        while (rs.next()) {
+            // Assuming fields contains comma-separated column names.
+            // This will concatenate the values of these columns for each row.
+            String[] fieldNames = (fields).split(",");
+            for (String field : fieldNames) {
+                resultBuilder.append(rs.getString(field.trim())).append(",");
+            }
+            resultBuilder.append("|"); // New line for each row
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+
+        return resultBuilder.toString();
     }
 
     public void updateVehicleRentalStatus(String lic_plate, boolean isRented) throws SQLException, ClassNotFoundException {

@@ -1,5 +1,9 @@
 package mainClasses;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *
  * @author dimos
@@ -72,5 +76,31 @@ public class Maintenance {
         this.end_date = _end_date;
         this.maint_type = _maint_type;
         this.status = _status;
+    }
+
+    public Maintenance(String _lic_plate, String _maint_type) {
+        this.lic_plate = _lic_plate;
+        this.maint_type = _maint_type;
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = new Date(); // Current date
+        this.start_date = dateFormat.format(startDate);
+
+        // Calculate end date based on issue type
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        if ("maint".equals(_maint_type)) {
+            calendar.add(Calendar.DATE, 1);
+            this.end_date = dateFormat.format(calendar.getTime());
+            this.cost = 50;
+        }
+
+        if ("repair".equals(_maint_type)) {
+            calendar.add(Calendar.DATE, 3);
+            this.end_date = dateFormat.format(calendar.getTime());
+            this.cost = 150;
+        }
+
+        this.status = "ongoing";
     }
 }

@@ -16,6 +16,22 @@
         <servlet-name>DateUtil</servlet-name>
         <servlet-class>mainClasses.DateUtil</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddVehicleAdmin</servlet-name>
+        <servlet-class>ajax.calls.AddVehicleAdmin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VehicleAdmin</servlet-name>
+        <servlet-class>ajax.calls.VehicleAdmin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminStatistics</servlet-name>
+        <servlet-class>ajax.calls.AdminStatistics</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RentalHistory</servlet-name>
+        <servlet-class>ajax.calls.RentalHistory</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetVehicles</servlet-name>
         <url-pattern>/GetVehicles</url-pattern>
@@ -31,6 +47,22 @@
     <servlet-mapping>
         <servlet-name>DateUtil</servlet-name>
         <url-pattern>/DateUtil</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddVehicleAdmin</servlet-name>
+        <url-pattern>/AddVehicleAdmin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VehicleAdmin</servlet-name>
+        <url-pattern>/VehicleAdmin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminStatistics</servlet-name>
+        <url-pattern>/AdminStatistics</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RentalHistory</servlet-name>
+        <url-pattern>/RentalHistory</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

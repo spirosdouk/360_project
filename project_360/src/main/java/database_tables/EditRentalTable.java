@@ -36,12 +36,14 @@ public class EditRentalTable {
         Rental rental = gson.fromJson(json, Rental.class);
         return rental;
     }
+
     public void deleteRental(String id) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
         String delete = "DELETE FROM rentals WHERE rental_id = '" + id + "'";
         stmt.executeUpdate(delete);
     }
+
     public ArrayList<Rental> getRentalsByUsername(String username) throws SQLException, ClassNotFoundException {
         ArrayList<Rental> rentals = new ArrayList<>();
         Connection con = DB_Connection.getConnection();
@@ -76,6 +78,7 @@ public class EditRentalTable {
 
         return rentals;
     }
+
     public ArrayList<Rental> getAllRentals() throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
@@ -139,6 +142,7 @@ public class EditRentalTable {
             }
         }
     }
+
     public void updateRentalReturnStatus(String lic_plate, double newTotalCost, String isReturned) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         try {
@@ -161,7 +165,7 @@ public class EditRentalTable {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
         String sql = "CREATE TABLE rentals "
-                + "(rental_id INTEGER not NULL AUTO_INCREMENT, "
+                + "( "
                 + " lic_plate VARCHAR(10) not NULL,"
                 + " username  VARCHAR(15) not NULL, "
                 + " driv_lic INTEGER not NULL, "
@@ -173,8 +177,8 @@ public class EditRentalTable {
                 + " has_insurance VARCHAR(15) not NULL, "
                 + " new_carplate VARCHAR(15) , "
                 + "FOREIGN KEY (lic_plate) REFERENCES vehicles(lic_plate), "
-                + "FOREIGN KEY (username) REFERENCES users(username), "
-                + " PRIMARY KEY (rental_id))";
+                + "FOREIGN KEY (username) REFERENCES users(username)) ";
+//                + " PRIMARY KEY (rental_id))";
         stmt.execute(sql);
         stmt.close();
         con.close();
@@ -210,6 +214,30 @@ public class EditRentalTable {
         } catch (SQLException ex) {
             Logger.getLogger(EditRentalTable.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public String getVehicleYearlyRevenue() throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        ResultSet rs;
+        String fields = "RentalYear, V.type, TotalRevenue";
+        String query = "SELECT YEAR(R.rental_date) AS RentalYear, V.type, SUM(R.total_cost) AS TotalRevenue FROM vehicles V LEFT JOIN rentals R ON V.lic_plate = R.lic_plate WHERE  V.lic_plate IN (SELECT lic_plate FROM rentals) GROUP BY YEAR(R.rental_date), V.type;";
+        rs = stmt.executeQuery(query);
+        StringBuilder resultBuilder = new StringBuilder();
+        while (rs.next()) {
+            // Assuming fields contains comma-separated column names.
+            // This will concatenate the values of these columns for each row.
+            String[] fieldNames = (fields).split(",");
+            for (String field : fieldNames) {
+                resultBuilder.append(rs.getString(field.trim())).append(",");
+            }
+            resultBuilder.append("|"); // New line for each row
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+
+        return resultBuilder.toString();
     }
 
 }
