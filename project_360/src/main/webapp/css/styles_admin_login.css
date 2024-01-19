@@ -1,11 +1,11 @@
 :root {
   --accent: #a7ae9c;
-  --accent-1: #d3d3d3;
+  --accent-1: #e9e9e9;
   --accent-2: #5f6655;
   --accent-3: #3e4435;
   --accent-4: #202618;
   --main: #ff3131;
-  --main-1: #000;
+  --main-1: #212529;
   --main-2: #b50000;
   --main-3: #920000;
   --main-4: #710000;
@@ -68,6 +68,10 @@ nav {
   position: relative;
   z-index: -1;
   border-radius: 100vw 0 0 100vw;
+}
+
+.nav-list li.active a{
+    color: black;
 }
 
 .nav-list li.active::before,

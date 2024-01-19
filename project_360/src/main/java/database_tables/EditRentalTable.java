@@ -147,12 +147,32 @@ public class EditRentalTable {
     public void updateRentalReturnStatus(String lic_plate, double newTotalCost, String isReturned) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         try {
-            String updateQuery = "UPDATE rentals SET total_cost = ?, is_returned = ? WHERE lic_plate = ?";
-            PreparedStatement pstmt = con.prepareStatement(updateQuery);
-            pstmt.setDouble(1, newTotalCost);
-            pstmt.setString(2, isReturned);
-            pstmt.setString(3, lic_plate);
-            pstmt.executeUpdate();
+            // Update the total cost first
+            String updateCostQuery = "UPDATE rentals SET total_cost = ? WHERE lic_plate = ? AND is_returned = 'false'";
+            PreparedStatement pstmtCost = con.prepareStatement(updateCostQuery);
+            pstmtCost.setDouble(1, newTotalCost);
+            pstmtCost.setString(2, lic_plate);
+            int affectedRowsCost = pstmtCost.executeUpdate();
+
+            if(affectedRowsCost > 0) {
+                System.out.println("Total cost updated successfully.");
+            } else {
+                System.out.println("No cost update made. The vehicle may already be returned or the license plate does not exist.");
+            }
+
+            // Then update the is_returned status
+            String updateReturnQuery = "UPDATE rentals SET is_returned = ? WHERE lic_plate = ?";
+            PreparedStatement pstmtReturn = con.prepareStatement(updateReturnQuery);
+            pstmtReturn.setString(1, isReturned);
+            pstmtReturn.setString(2, lic_plate);
+            int affectedRowsReturn = pstmtReturn.executeUpdate();
+
+            if(affectedRowsReturn > 0) {
+                System.out.println("Return status updated successfully.");
+            } else {
+                System.out.println("No return status update made. The vehicle may already be returned or the license plate does not exist.");
+            }
+
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
         } finally {
@@ -161,6 +181,7 @@ public class EditRentalTable {
             }
         }
     }
+
 
     public void createRentalTable() throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();

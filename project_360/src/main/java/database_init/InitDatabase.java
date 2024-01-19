@@ -86,10 +86,37 @@ public class InitDatabase {
         evt.addNewVehicle(Resources.veh3);
         evt.addNewVehicle(Resources.veh4);
         evt.addNewVehicle(Resources.veh5);
+        evt.addNewVehicle(Resources.veh6);
+        evt.addNewVehicle(Resources.veh7);
+        evt.addNewVehicle(Resources.veh8);
+        evt.addNewVehicle(Resources.veh9);
+        evt.addNewVehicle(Resources.veh10);
+        evt.addNewVehicle(Resources.veh11);
+        evt.addNewVehicle(Resources.veh12);
+        evt.addNewVehicle(Resources.veh13);
+        evt.addNewVehicle(Resources.veh14);
+        evt.addNewVehicle(Resources.veh15);
+        evt.addNewVehicle(Resources.veh16);
 
         EditRentalTable ert = new EditRentalTable();
         ert.addNewRental(Resources.rental0);
+        evt.updateVehicleRentalStatus_date(Resources.rental0.getLic_plate(), true, Resources.rental0.getDuration());
+        evt.updateVehicleRentalStatus(Resources.rental0.getLic_plate(), false);
         ert.addNewRental(Resources.rental1);
+        evt.updateVehicleRentalStatus_date(Resources.rental1.getLic_plate(), true, Resources.rental1.getDuration());
+        evt.updateVehicleRentalStatus(Resources.rental1.getLic_plate(), false);
+        ert.addNewRental(Resources.rental2);
+        evt.updateVehicleRentalStatus_date(Resources.rental2.getLic_plate(), true, Resources.rental2.getDuration());
+        evt.updateVehicleRentalStatus(Resources.rental2.getLic_plate(), false);
+        ert.addNewRental(Resources.rental3);
+        evt.updateVehicleRentalStatus_date(Resources.rental3.getLic_plate(), true, Resources.rental3.getDuration());
+        evt.updateVehicleRentalStatus(Resources.rental3.getLic_plate(), false);
+        ert.addNewRental(Resources.rental4);
+        evt.updateVehicleRentalStatus_date(Resources.rental4.getLic_plate(), true, Resources.rental4.getDuration());
+        evt.updateVehicleRentalStatus(Resources.rental4.getLic_plate(), false);
+        ert.addNewRental(Resources.rental5);
+        evt.updateVehicleRentalStatus_date(Resources.rental5.getLic_plate(), true, Resources.rental5.getDuration());
+        evt.updateVehicleRentalStatus(Resources.rental5.getLic_plate(), false);
 
 
         EditMaintenanceTable emt = new EditMaintenanceTable();
