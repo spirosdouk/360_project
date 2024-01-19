@@ -73,7 +73,7 @@ public class AdminStatistics extends HttpServlet {
             ret += ert.getVehicleYearlyRevenue();
             ret += "?";
             ret += "Total Maintenance and Repair Costs|";
-            ret += emt.getVehicleYearlyRevenue();
+            ret += emt.getVehicleYearlyMaintCost();
             ret += "?";
             ret += "Most Popular Vehicle|";
             ret += evt.getPopularVehicle();

@@ -1,0 +1,124 @@
+This file contains the queries to create all the tables and all the examples we add:
+
+User Table:
+<String query = "CREATE TABLE users "
+                + "(username VARCHAR(30) not null unique,"
+                + "    password VARCHAR(32) not null,"
+                + "    name VARCHAR(50) not null,"
+                + "    birthdate DATE not null,"
+                + "    address VARCHAR(100) not null,"
+                + "    driv_lic BIGINT,"
+                + "    credit_card BIGINT not null,"
+                + " PRIMARY KEY (user_id))";
+
+
+Vehicle Table:
+String query = "CREATE TABLE vehicles "
+                + "    (brand VARCHAR(30) not null,"
+                + "    model VARCHAR(30) not null,"
+                + "    color VARCHAR(30) not null,"
+                + "    type VARCHAR(15) not null,"
+                + "    lic_plate VARCHAR(10) not null unique,"
+                + "    range_km INTEGER not null,"
+                + "    rented_count INT,"
+                + "    total_days INT,"
+                + "    daily_rental_cost INT not null,"
+                + "    daily_insurance_cost INT not null,"
+                + "    is_damaged VARCHAR(15) not null,"
+                + "    isRented VARCHAR(15) not null," // Add the new column here
+                + "    subtype_name VARCHAR(30),"
+                + "    FOREIGN KEY (subtype_name) REFERENCES subtype(subtype_name),"
+                + " PRIMARY KEY (lic_plate))";
+
+
+Subtype Table:
+String query = "CREATE TABLE subtype "
+                + "(subtype_name VARCHAR(30) not null unique,"
+                + "    capacity INTEGER not null,"
+                + " PRIMARY KEY (subtype_name))";
+
+
+Rental Table:
+String sql = "CREATE TABLE rentals "
+                + "( rental_id INTEGER not NULL AUTO_INCREMENT,"
+                + " lic_plate VARCHAR(10) not NULL,"
+                + " username  VARCHAR(15) not NULL, "
+                + " driv_lic INTEGER not NULL, "
+                + " rental_date DATE not NULL, "
+                + " duration INTEGER not NULL, "
+                + " daily_cost INTEGER not NULL, "
+                + " total_cost DOUBLE not NULL, "
+                + " is_returned VARCHAR(15) not NULL, "
+                + " has_insurance VARCHAR(15) not NULL, "
+                + " new_carplate VARCHAR(15) , "
+                + "FOREIGN KEY (lic_plate) REFERENCES vehicles(lic_plate), "
+                + "FOREIGN KEY (username) REFERENCES users(username), "
+                + " PRIMARY KEY (rental_id))";
+
+
+Maintenance Table:
+String sql = "CREATE TABLE maintenance "
+                + "(maintenance_id INTEGER not NULL AUTO_INCREMENT, "
+                + " lic_plate VARCHAR(10) not NULL,"
+                + " cost INTEGER not NULL, "
+                + " start_date DATE not NULL, "
+                + " end_date DATE not NULL, "
+                + " maint_type VARCHAR(15) not NULL, "
+                + " status VARCHAR(15) not NULL, "
+                + "FOREIGN KEY (lic_plate) REFERENCES vehicles(lic_plate), "
+                + " PRIMARY KEY (maintenance_id))";
+
+
+
+The examples:
+
+    static User user0 = new User("mitsos", "letsee!", "Mitsos Mitsakis", "Kalokairinou 112, Heraklion", "2002-01-21", 995566777, 9);
+    static User user1 = new User("nina", "aaa111!", "Katerina Nina", "Kalokairinou 112, Heraklion", "2007-01-21", 0, 8);
+    static User user2 = new User("mpampis", "aaa111!", "Mpampis", "Kalokairinou 112, Heraklion", "1997-02-15", 112233445, 7);
+    static User user3 = new User("tsitsip", "aaa111!", "Tsitsipas", "Kalokairinou 112, Heraklion", "2000-01-21", 153248697, 5);
+    static User user4 = new User("sakari", "aaa111!", "Maria Sakari", "Kalokairinou 112, Heraklion", "2001-05-21", 147852369, 4);
+    static User user5 = new User("dasdsadsai", "dasdasdasd", "Madasdasdasi", "Kdasdasdasdasdasderaklion", "2001-05-21", 0, 4);
+
+
+    static Vehicle veh0 = new Vehicle("Fiat", "Panda", "blue", "car", "AD4152", 320, 30, 15, "false", "city car", "true");
+    static Vehicle veh4 = new Vehicle("Kia", "Sportage", "gray", "car", "TH5263", 320, 30, 15, "true", "SUV", "false");
+    static Vehicle veh5 = new Vehicle("Kia", "Sportage", "red", "car", "FK5161", 320, 30, 15, "false", "SUV", "false");
+    static Vehicle veh6 = new Vehicle("Fiat", "Panda", "gray", "car", "FK5123", 320, 30, 15, "false", "city car", "false");
+    static Vehicle veh7 = new Vehicle("Jaguar", "F-Type", "gray", "car", "LY1515", 320, 40, 20, "false", "Super Car", "false");
+
+
+    static Vehicle veh1 = new Vehicle("Rad Power", "RadExpand", "black", "bicycle", "b1", 70, 15, 8, "false", "", "false");
+    static Vehicle veh8 = new Vehicle("Swagtron", "EB7 Elite", "red", "bicycle", "b2", 70, 15, 8, "false", "", "false");
+    static Vehicle veh9 = new Vehicle("NAKTO", "Santa Monica", "white", "bicycle", "b3", 70, 15, 8, "false", "", "false");
+    static Vehicle veh10 = new Vehicle("NAKTO", "Discovery", "black", "bicycle", "b4", 70, 15, 8, "false", "", "false");
+
+    static Vehicle veh2 = new Vehicle("Yamaha", "Bolt", "gray", "bike", "JD4522", 180, 25, 12, "false", "", "false");
+    static Vehicle veh11 = new Vehicle("BMW", "K1600 B", "black", "bike", "JE5632", 180, 25, 12, "false", "", "false");
+    static Vehicle veh12 = new Vehicle("DUCATI", "MULTISTRADA", "red", "bike", "GP4852", 180, 25, 12, "false", "", "false");
+    static Vehicle veh13 = new Vehicle("HARLEY", "ULTRA", "black", "bike", "HD5981", 180, 25, 12, "false", "", "false");
+
+    static Vehicle veh3 = new Vehicle("Glion", "Balto", "silver", "scooter", "s1", 320, 30, 15, "false", "", "true");
+    static Vehicle veh14 = new Vehicle("Glion", "Balto", "black", "scooter", "s3", 320, 30, 15, "false", "", "false");
+    static Vehicle veh15 = new Vehicle("Glion", "Balto", "gray", "scooter", "s2", 320, 30, 15, "false", "", "false");
+    static Vehicle veh16 = new Vehicle("Glion", "Balto", "red", "scooter", "s4", 320, 30, 15, "false", "", "false");
+
+    static Subtype st = new Subtype("NULL", 0);
+    static Subtype st0 = new Subtype("SUV", 7);
+    static Subtype st1 = new Subtype("city car", 5);
+    static Subtype st2 = new Subtype("Super Car", 2);
+    static Subtype st3 = new Subtype("Van", 9);
+    static Subtype st4 = new Subtype("Cabrio", 4);
+
+    static Maintenance maint0 = new Maintenance("AD4152", 50, "2023-05-05", "2023-05-06", "maintenance", "finished");
+    static Maintenance maint1 = new Maintenance("b1", 50, "2023-06-05", "2023-06-06", "maintenance", "finished");
+    static Maintenance maint2 = new Maintenance("JD4522", 150, "2023-08-15", "2023-08-18", "repair", "finished");
+    static Maintenance maint3 = new Maintenance("AD4152", 50, "2023-12-05", "2023-12-06", "maintenance", "finished");
+    static Maintenance maint4 = new Maintenance("FK5161", 150, "2024-01-18", "2024-01-21", "repair", "ongoing");
+
+    static Rental rental0 = new Rental("mitsos", 995566777, "AD4152", 5, 45, "2023-04-30", "true", "true", "none");
+    static Rental rental1 = new Rental("nina", 0, "s1", 5, 45, "2023-07-03", "true", "false", "none");
+    static Rental rental2 = new Rental("sakari", 147852369, "GP4852", 5, 37, "2023-05-30", "true", "true", "HD5981");
+    static Rental rental3 = new Rental("tsitsip", 0, "b2", 5, 15, "2023-10-03", "true", "false", "none");
+    static Rental rental4 = new Rental("tsitsip", 995566777, "AD4152", 5, 45, "2023-12-13", "true", "true", "none");
+    static Rental rental5 = new Rental("sakari", 229933777, "GP4852", 5, 37, "2024-01-03", "true", "true", "none");
+

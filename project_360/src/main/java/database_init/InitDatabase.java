@@ -139,6 +139,6 @@ public class InitDatabase {
 
     public void deleteFromDatabase() throws ClassNotFoundException, SQLException {
         EditUserTable eut = new EditUserTable();
-        eut.deleteUser("6");
+        eut.deleteUser("dasdsadsai");
     }
 }

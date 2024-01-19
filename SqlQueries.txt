@@ -1,0 +1,140 @@
+This file contains all the queries that we made to communicate with database:
+
+User Queries:
+
+  "DELETE FROM users WHERE username = '" + username + "'"
+  "SELECT * FROM users WHERE username = '" + username + "'"
+  "SELECT * FROM users WHERE username = ? AND password = ?"
+  "SELECT * FROM users"
+  "UPDATE users SET " + field + "='" + value + "' WHERE username = '" + username + "'"
+
+  "INSERT INTO "
+                    + " users (username,password,name,birthdate,address, driv_lic, credit_card)"
+                    + " VALUES ("
+                    + "'" + user.getUsername() + "',"
+                    + "'" + user.getPassword() + "',"
+                    + "'" + user.getName() + "',"
+                    + "'" + user.getBirthdate() + "',"
+                    + "'" + user.getAddress() + "',"
+                    + "'" + user.getDriv_lic() + "',"
+                    + "'" + user.getCredit_card() + "'"
+                    + ")"
+
+  And the Create Table
+
+
+Vehicle Queries:
+
+  "DELETE FROM vehicles WHERE lic_plate = '" + lic_plate + "'"
+  "SELECT * FROM vehicles"
+  UPDATE vehicles SET " + field + "='" + value + "' WHERE lic_plate = '" + lic_plate + "'"
+
+  fields = "V.lic_plate, V.type, V.brand, V.model, V.isRented, V.is_damaged,"
+  SELECT " + fields + " CASE WHEN M.status = 'ongoing' THEN 'ongoing' ELSE 'fine' END AS maintenance_status FROM vehicles V LEFT JOIN maintenance M ON V.lic_plate = M.lic_plate AND M.status = 'ongoing'
+
+  fields = "RentalYear, V.type, MinDuration, MaxDuration, AvgDuration"
+  "SELECT YEAR(R.rental_date) AS RentalYear, V.type, COALESCE(MIN(R.duration), 0) AS MinDuration, COALESCE(MAX(R.duration), 0) AS MaxDuration,  COALESCE(AVG(R.duration), 0) AS AvgDuration FROM vehicles V LEFT JOIN rentals R ON V.lic_plate = R.lic_plate WHERE R.rental_date IS NOT NULL GROUP BY V.type, YEAR(R.rental_date);"
+
+  fields = "V.lic_plate, V.type, V.brand, V.model, V.rented_count"
+  "SELECT V.lic_plate, V.type, V.brand, V.model, V.rented_count FROM vehicles V INNER JOIN (SELECT type, MAX(rented_count) AS MaxRentedCount FROM vehicles GROUP BY type) AS SubQuery ON V.type = SubQuery.type AND V.rented_count = SubQuery.MaxRentedCount;"
+
+  "UPDATE vehicles SET isRented = ? WHERE lic_plate = ?"
+  "SELECT total_days FROM vehicles WHERE lic_plate = ?"
+
+  "UPDATE vehicles SET isRented = ?, total_days = ?, rented_count = rented_count + 1 WHERE lic_plate = ?
+  "UPDATE vehicles SET isRented = ?, total_days = ? WHERE lic_plate = ?"
+
+  "UPDATE vehicles SET is_damaged = ? WHERE lic_plate = ?"
+  "SELECT type FROM vehicles WHERE lic_plate = ?"
+  "SELECT v.* FROM vehicles v LEFT JOIN maintenance m ON v.lic_plate = m.lic_plate AND m.status = 'ongoing' WHERE v.type = ? AND v.isRented = 'false' AND v.is_damaged = 'false' AND m.lic_plate IS NULL;"
+
+  "INSERT INTO "
+                    + " vehicles (brand, model, color, type, lic_plate, range_km, rented_count, total_days, daily_rental_cost, daily_insurance_cost, is_damaged, isRented, subtype_name)"
+                    + " VALUES ("
+                    + "'" + _vehicle.getBrand() + "',"
+                    + "'" + _vehicle.getModel() + "',"
+                    + "'" + _vehicle.getColor() + "',"
+                    + "'" + _vehicle.getType() + "',"
+                    + "'" + _vehicle.getLic_plate() + "',"
+                    + "'" + _vehicle.getRange_km() + "',"
+                    + "'" + _vehicle.getRented_count() + "',"
+                    + "'" + _vehicle.getTotal_days() + "',"
+                    + "'" + _vehicle.getDaily_rental_cost() + "',"
+                    + "'" + _vehicle.getDaily_insurance_cost() + "',"
+                    + "'" + _vehicle.getIs_damaged() + "',"
+                    + "'" + _vehicle.getIsRented() + "',"
+                    + "'" + subtypeValue + "'"
+                    + ")"
+
+  And the Create Table
+
+
+SubType Table:
+
+  "DELETE FROM subtype WHERE subtype_name = '" + subtype_name + "'"
+  "SELECT * FROM subtype"
+  "UPDATE subtype SET " + field + "='" + value + "' WHERE subtype_name = '" + subtype_name + "'"
+
+  "INSERT INTO "
+                    + " subtype (subtype_name, capacity)"
+                    + " VALUES ("
+                    + "'" + _subtype.getSubtype_name() + "',"
+                    + "'" + _subtype.getCapacity() + "'"
+                    + ")"
+
+  And the Create Table
+
+
+Rental Table:
+
+  "DELETE FROM rentals WHERE rental_id = '" + id + "'"
+  "SELECT * FROM rentals WHERE username = ?"
+  "SELECT * FROM rentals"
+  "SELECT * FROM rentals WHERE driv_lic = ?"
+  "UPDATE rentals SET is_returned = ? WHERE lic_plate = ?"
+  "UPDATE rentals SET new_carplate = ? WHERE lic_plate = ?"
+  "UPDATE rentals SET total_cost = ? WHERE lic_plate = ? AND is_returned = 'false'"
+  "UPDATE rentals SET is_returned = ? WHERE lic_plate = ?"
+  "SELECT YEAR(R.rental_date) AS RentalYear, V.type, SUM(R.total_cost) AS TotalRevenue FROM vehicles V LEFT JOIN rentals R ON V.lic_plate = R.lic_plate WHERE  V.lic_plate IN (SELECT lic_plate FROM rentals) GROUP BY YEAR(R.rental_date), V.type;"
+
+  "INSERT INTO "
+                    + " rentals (username, lic_plate, driv_lic, duration, daily_cost, total_cost, rental_date, is_returned, has_insurance, new_carplate)"
+                    + " VALUES ("
+                    + "'" + _rent.getUsername() + "',"
+                    + "'" + _rent.getLic_plate() + "',"
+                    + "'" + _rent.getDriv_lic() + "',"
+                    + "'" + _rent.getDuration() + "',"
+                    + "'" + _rent.getDaily_cost() + "',"
+                    + "'" + _rent.getTotal_cost() + "',"
+                    + "'" + _rent.getRental_date() + "',"
+                    + "'" + _rent.Is_returned() + "',"
+                    + "'" + _rent.getHas_insurance() + "',"
+                    + "'" + _rent.getCar_change() + "'"
+                    + ")"
+
+  And the Create Table
+
+
+Maintenance Table:
+
+  "DELETE FROM maintenance WHERE maintenance_id = '" + id + "'"
+  "SELECT * FROM maintenance"
+  "UPDATE maintenance SET " + field + "='" + value + "' WHERE maintenance_id = '" + maintenance_id + "'"
+  "SELECT YEAR(M.start_date) AS MaintenanceYear, M.maint_type, SUM(M.cost) AS TotalCost FROM maintenance M GROUP BY YEAR(M.start_date), M.maint_type;"
+
+  "SELECT maintenance_id FROM maintenance WHERE end_date <= CURRENT_DATE()"
+  "UPDATE maintenance SET status = 'finished' WHERE maintenance_id = ?"
+
+  "INSERT INTO "
+                    + " maintenance (maintenance_id, lic_plate, cost, start_date, end_date, maint_type, status)"
+                    + " VALUES ("
+                    + "'" + _mainten.getMaintenance_id() + "',"
+                    + "'" + _mainten.getLic_plate() + "',"
+                    + "'" + _mainten.getCost() + "',"
+                    + "'" + _mainten.getStart_date() + "',"
+                    + "'" + _mainten.getEnd_date() + "',"
+                    + "'" + _mainten.getMaint_type() + "',"
+                    + "'" + _mainten.isStatus() + "'"
+                    + ")"
+
+  And the Create Table

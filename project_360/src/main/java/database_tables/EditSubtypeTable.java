@@ -16,10 +16,10 @@ import mainClasses.Subtype;
  * @author dimos
  */
 public class EditSubtypeTable {
-    public void deleteSubtype(String id) throws SQLException, ClassNotFoundException {
+    public void deleteSubtype(String subtype_name) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
-        String delete = "DELETE FROM subtype WHERE vehicle_id = '" + id + "'";
+        String delete = "DELETE FROM subtype WHERE subtype_name = '" + subtype_name + "'";
         stmt.executeUpdate(delete);
     }
 
@@ -43,10 +43,10 @@ public class EditSubtypeTable {
         return null;
     }
 
-    public void updateSubtypeField(String username, String field, String value) throws SQLException, ClassNotFoundException {
+    public void updateSubtypeField(String subtype_name, String field, String value) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
-        String update = "UPDATE subtype SET " + field + "='" + value + "' WHERE username = '" + username + "'";
+        String update = "UPDATE subtype SET " + field + "='" + value + "' WHERE subtype_name = '" + subtype_name + "'";
         stmt.executeUpdate(update);
     }
 

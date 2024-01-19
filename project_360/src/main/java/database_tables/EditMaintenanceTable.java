@@ -63,10 +63,10 @@ public class EditMaintenanceTable {
         return null;
     }
 
-    public void updateMaintenanceField(String username, String field, String value) throws SQLException, ClassNotFoundException {
+    public void updateMaintenanceField(String maintenance_id, String field, String value) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
-        String update = "UPDATE maintenance SET " + field + "='" + value + "' WHERE username = '" + username + "'";
+        String update = "UPDATE maintenance SET " + field + "='" + value + "' WHERE maintenance_id = '" + maintenance_id + "'";
         stmt.executeUpdate(update);
     }
 
@@ -118,7 +118,7 @@ public class EditMaintenanceTable {
         }
     }
 
-    public String getVehicleYearlyRevenue() throws SQLException, ClassNotFoundException {
+    public String getVehicleYearlyMaintCost() throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
         ResultSet rs;
