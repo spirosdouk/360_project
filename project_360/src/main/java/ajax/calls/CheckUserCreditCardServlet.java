@@ -13,10 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import mainClasses.User;
 
-/**
- *
- * @author luke laptop
- */
+
 @WebServlet(name = "CheckUserCreditCardServlet", urlPatterns = {"/CheckUserCreditCardServlet"})
 public class CheckUserCreditCardServlet extends HttpServlet {
 

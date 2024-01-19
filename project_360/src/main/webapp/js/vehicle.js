@@ -147,10 +147,10 @@ function confirmRental() {
     }
     
     // also another check for the credit card
-    if (!checkUserCard(localStorage.getItem('user'))) {
-        console.log('There no available credit card to bill');
-        return;
-    }
+//    if (!checkUserCard(localStorage.getItem('user'))) {
+//        console.log('There no available credit card to bill');
+//        return;
+//    }
 
     const includeInsurance = document.getElementById('modalInsuranceCheck').checked;
     const licensePlate = selectedVehicleLicPlate;
@@ -199,8 +199,8 @@ function confirmRental() {
                     var modal = bootstrap.Modal.getInstance(myModalEl);
                     modal.hide();
                     alert("Rental transaction recorded successfully");
-                    console.log('Credit card: ' + creditCard + '\nHas been billed succesfully\n');
-                    alert("Credit card: " + creditCard + "\nHas been billed succesfully\n");
+//                    console.log('Credit card: ' + creditCard + '\nHas been billed succesfully\n');
+//                    alert("Credit card: " + creditCard + "\nHas been billed succesfully\n");
                     window.location.reload();
                 } else {
                     console.error("Error creating rental transaction:", xhrRentalCreation.responseText);

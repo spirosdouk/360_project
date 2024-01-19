@@ -42,10 +42,10 @@ public class EditUserTable {
         return gson.fromJson(reader, User.class);
     }
 
-    public void deleteUser(String username) throws SQLException, ClassNotFoundException {
+    public void deleteUser(String id) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();
-        String delete = "DELETE FROM users WHERE username = '" + username + "'";
+        String delete = "DELETE FROM users WHERE user_id = '" + id + "'";
         stmt.executeUpdate(delete);
     }
     public User getUserByUsername(String username) throws SQLException, ClassNotFoundException {
@@ -63,6 +63,7 @@ public class EditUserTable {
 
             if(rs.next()) {
                 user = new User();
+                user.setUser_id(rs.getInt("user_id"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password")); // Assuming there is a password column
                 user.setName(rs.getString("name"));
@@ -178,14 +179,15 @@ public class EditUserTable {
         Statement stmt = con.createStatement();
 
         String query = "CREATE TABLE users "
-                + "(username VARCHAR(30) not null unique,"
+                + "(user_id INTEGER not NULL AUTO_INCREMENT, "
+                + "    username VARCHAR(30) not null unique,"
                 + "    password VARCHAR(32) not null,"
                 + "    name VARCHAR(50) not null,"
                 + "    birthdate DATE not null,"
                 + "    address VARCHAR(100) not null,"
                 + "    driv_lic BIGINT,"
                 + "    credit_card BIGINT not null,"
-                + " PRIMARY KEY (username))";
+                + " PRIMARY KEY (user_id))";
         stmt.execute(query);
         stmt.close();
     }
