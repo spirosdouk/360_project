@@ -1,5 +1,6 @@
 package database_init;
 
+import java.math.BigDecimal;
 import mainClasses.Maintenance;
 import mainClasses.Rental;
 import mainClasses.Subtype;
@@ -12,12 +13,12 @@ import mainClasses.Vehicle;
  */
 public class Resources {
 
-    static User user0 = new User("mitsos", "letsee!", "Mitsos Mitsakis", "Kalokairinou 112, Heraklion", "2002-01-21", 995566777, 9);
-    static User user1 = new User("nina", "aaa111!", "Katerina Nina", "Kalokairinou 112, Heraklion", "2007-01-21", 0, 8);
-    static User user2 = new User("mpampis", "aaa111!", "Mpampis", "Kalokairinou 112, Heraklion", "1997-02-15", 112233445, 7);
-    static User user3 = new User("tsitsip", "aaa111!", "Tsitsipas", "Kalokairinou 112, Heraklion", "2000-01-21", 153248697, 5);
-    static User user4 = new User("sakari", "aaa111!", "Maria Sakari", "Kalokairinou 112, Heraklion", "2001-05-21", 147852369, 4);
-    static User user5 = new User("dasdsadsai", "dasdasdasd", "Madasdasdasi", "Kdasdasdasdasdasderaklion", "2001-05-21", 0, 4);
+    static User user0 = new User("mitsos", "letsee!", "Mitsos Mitsakis", "Kalokairinou 112, Heraklion", "2002-01-21", 995566777, new BigDecimal(9));
+    static User user1 = new User("nina", "aaa111!", "Katerina Nina", "Kalokairinou 112, Heraklion", "2007-01-21", 0, new BigDecimal(8));
+    static User user2 = new User("mpampis", "aaa111!", "Mpampis", "Kalokairinou 112, Heraklion", "1997-02-15", 112233445, new BigDecimal(7));
+    static User user3 = new User("tsitsip", "aaa111!", "Tsitsipas", "Kalokairinou 112, Heraklion", "2000-01-21", 153248697, new BigDecimal(5));
+    static User user4 = new User("sakari", "aaa111!", "Maria Sakari", "Kalokairinou 112, Heraklion", "2001-05-21", 147852369, new BigDecimal(4));
+    static User user5 = new User("dasdsadsai", "dasdasdasd", "Madasdasdasi", "Kdasdasdasdasdasderaklion", "2001-05-21", 0, new BigDecimal(4));
 
 
     static Vehicle veh0 = new Vehicle("Fiat", "Panda", "blue", "car", "AD4152", 320, 30, 15, "false", "city car", "true");

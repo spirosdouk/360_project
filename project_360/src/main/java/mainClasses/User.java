@@ -1,4 +1,7 @@
 package mainClasses;
+
+import java.math.BigDecimal;
+
 /**
  *
  * @author dimos
@@ -6,13 +9,14 @@ package mainClasses;
 public class User {
     int user_id;
     String password, name, address, birthdate, username;
-    long credit_card, driv_lic;
+    long driv_lic;
+    BigDecimal credit_card;
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
 
-    public void setCredit_card(int credit_card) {
+    public void setCredit_card(BigDecimal credit_card) {
         this.credit_card = credit_card;
     }
 
@@ -48,7 +52,7 @@ public class User {
         return user_id;
     }
 
-    public long getCredit_card() {
+    public BigDecimal getCredit_card() {
         return credit_card;
     }
 
@@ -74,7 +78,7 @@ public class User {
     public User() {
     }
 
-    public User(String _username, String _password, String _name, String _address, String _birthdate, int _driv_lic, int _credit_card) {
+    public User(String _username, String _password, String _name, String _address, String _birthdate, long _driv_lic, BigDecimal _credit_card) {
         this.username = _username;
         this.password = _password;
         this.name = _name;

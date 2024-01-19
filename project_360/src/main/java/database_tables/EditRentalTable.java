@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import mainClasses.Rental;
 import java.sql.PreparedStatement;
+import java.time.LocalDate;
 
 /**
  *
@@ -188,5 +189,57 @@ public class EditRentalTable {
             Logger.getLogger(EditRentalTable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public boolean isDrivingLicenceAvailable(int drivingLicence, LocalDate startDate, long duration) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
 
+        LocalDate endDate = startDate.plusDays(duration);
+        try {
+            String query = "SELECT * FROM rentals WHERE driv_lic = ?";
+            
+            pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, drivingLicence);
+            rs = pstmt.executeQuery();
+            
+            // Need to go through all of the rentals where this driving licence is used
+            // and check whether the current rental can be completed...
+            while (rs.next()) {
+                String json = DB_Connection.getResultsToJSON(rs);
+                Gson gson = new Gson();
+                Rental rental = gson.fromJson(json, Rental.class);
+                
+                if (rental.Is_returned().equals("true"))
+                    continue;
+                
+                LocalDate rentalStart = LocalDate.parse(rental.getRental_date());
+                LocalDate rentalFinish = rentalStart.plusDays(rental.getDuration());
+
+                // rentalStart is <= rentalFinish  and  startDate is <= endDate
+                
+                if (startDate.isAfter(rentalFinish) || endDate.isBefore(rentalStart))
+                    continue;
+                
+                return false;
+            }
+            
+            return true;
+            
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        
+        return false;
+    }
 }

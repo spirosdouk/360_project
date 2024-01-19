@@ -90,6 +90,9 @@ function handleLoginSubmit(event) {
         xhr.send(data);
     }
 }
+
+
+
 function calculateAge(birthdate) {
     var dob = new Date(birthdate);
     var diff_ms = Date.now()-dob.getTime();
