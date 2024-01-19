@@ -82,7 +82,7 @@ public class EditVehicleTable {
         Statement stmt = con.createStatement();
         ResultSet rs;
         String fields = "RentalYear, V.type, MinDuration, MaxDuration, AvgDuration";
-        String query = "SELECT YEAR(R.rental_date) AS RentalYear, V.type, COALESCE(MIN(R.duration), 0) AS MinDuration, COALESCE(MAX(R.duration), 0) AS MaxDuration,  COALESCE(AVG(R.duration), 0) AS AvgDuration FROM vehicles V LEFT JOIN rentals R ON V.lic_plate = R.lic_plate WHERE R.rental_date IS NOT NULL GROUP BY V.type;";
+        String query = "SELECT YEAR(R.rental_date) AS RentalYear, V.type, COALESCE(MIN(R.duration), 0) AS MinDuration, COALESCE(MAX(R.duration), 0) AS MaxDuration,  COALESCE(AVG(R.duration), 0) AS AvgDuration FROM vehicles V LEFT JOIN rentals R ON V.lic_plate = R.lic_plate WHERE R.rental_date IS NOT NULL GROUP BY V.type, YEAR(R.rental_date);";
         rs = stmt.executeQuery(query);
         StringBuilder resultBuilder = new StringBuilder();
         while (rs.next()) {
