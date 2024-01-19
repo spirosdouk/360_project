@@ -143,7 +143,7 @@ function confirmRental() {
     // the check needs to happen here for the drivers availability.
     var duration = (toDate - fromDate) / (1000 * 3600 * 24);
     if (!checkDriverAvailability(drivers_licence, fromDate, duration)) {
-        console.log('Driver is not available for the dates specified');
+        alert('Driver with the driver licence: ' + drivers_licence + ' is not available for the dates specified');
         return;
     }
     
