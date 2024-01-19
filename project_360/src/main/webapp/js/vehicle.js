@@ -1,5 +1,7 @@
 var vehicles = [];
 var selectedVehicleLicPlate = null;
+var creditCard;
+
 function handleSearchSubmit(event) {
     var user = localStorage.getItem('user');
     var age = localStorage.getItem('age');
@@ -87,6 +89,16 @@ function showRentalModal(licensePlate) {
                 Include Insurance
             </label>
         </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="modalDifferentDriver">
+            <label class="form-check-label" for="modalDifferentDriver">
+                Different Driver
+            </label>
+        </div>
+        <div id="drivingLicenceInput">
+            <label for="drivingLicence">Enter Driving License Number:</label>
+            <input type="number" class="form-control" id="drivingLicenceField" disabled />
+        </div>
     `;
 
     var myModal = new bootstrap.Modal(document.getElementById('rentalModal'), {
@@ -94,13 +106,19 @@ function showRentalModal(licensePlate) {
     });
     myModal.show();
 
+    document.getElementById('modalDifferentDriver').addEventListener('change', function() {
+        var inputField = document.getElementById('drivingLicenceField');
+        inputField.disabled = !this.checked;
+    });
 }
+
 
 function confirmRental() {
     const fromDateInput = document.getElementById('modalFromDate');
     const toDateInput = document.getElementById('modalToDate');
     const fromDate = new Date(fromDateInput.value);
     const toDate = new Date(toDateInput.value);
+    var drivers_licence = localStorage.getItem('driv_lic');
 
     if (!fromDateInput.value||!toDateInput.value) {
         alert("Please select both 'From Date' and 'To Date'.");
@@ -116,6 +134,24 @@ function confirmRental() {
     }
 
     const durationInDays = (toDate-fromDate)/(1000*3600*24);
+    const otherDriverSelected = document.getElementById('modalDifferentDriver').checked;
+    if (otherDriverSelected) {
+        drivers_licence = document.getElementById('drivingLicenceField');
+        console.log('The drivers licence is ' + drivers_licence);
+    }
+
+    // the check needs to happen here for the drivers availability.
+    if (!checkDriverAvailability(drivers_licence, fromDate, durationInDays)) {
+        console.log('Driver is not available for the dates specified');
+        return;
+    }
+    
+    // also another check for the credit card
+    if (!checkUserCard(localStorage.getItem('user'))) {
+        console.log('There no available credit card to bill');
+        return;
+    }
+
     const includeInsurance = document.getElementById('modalInsuranceCheck').checked;
     const licensePlate = selectedVehicleLicPlate;
     const updateVehicleData = {
@@ -141,7 +177,7 @@ function confirmRental() {
             const newRentalData = {
                 username: localStorage.getItem('user'),
                 lic_plate: licensePlate,
-                driv_lic: localStorage.getItem('driv_lic'),
+                driv_lic: drivers_licence,
                 duration: (toDate-fromDate)/(1000*3600*24),
                 daily_cost: dailyCost,
                 total_cost: totalCost,
@@ -163,7 +199,8 @@ function confirmRental() {
                     var modal = bootstrap.Modal.getInstance(myModalEl);
                     modal.hide();
                     alert("Rental transaction recorded successfully");
-
+                    console.log('Credit card: ' + creditCard + '\nHas been billed succesfully\n');
+                    alert("Credit card: " + creditCard + "\nHas been billed succesfully\n");
                     window.location.reload();
                 } else {
                     console.error("Error creating rental transaction:", xhrRentalCreation.responseText);
@@ -181,6 +218,8 @@ function confirmRental() {
     var modal = bootstrap.Modal.getInstance(myModalEl);
     modal.hide();
 }
+
+
 function revertVehicleStatus(licensePlate) {
     const revertVehicleData = {
         lic_plate: licensePlate,
@@ -198,6 +237,8 @@ function revertVehicleStatus(licensePlate) {
     };
     xhrVehicleRevert.send(JSON.stringify(revertVehicleData));
 }
+
+
 function fetchUserRentals() {
     var user = localStorage.getItem('user');
     var xhr = new XMLHttpRequest();
@@ -323,3 +364,56 @@ document.getElementById('issueForm').addEventListener('submit', function (event)
 });
 
 
+function checkDriverAvailability(theDrivingLicence, theStartDate, theDuration) {
+    var xhr = new XMLHttpRequest();
+    console.log('I am here\n\n\n');
+    console.log(theDrivingLicence);
+    console.log('Still here\n\n\n');
+    var url = '/project_360/CheckDriverAvailabilityServlet' +
+            '?driv_lic=' + encodeURIComponent(theDrivingLicence) +
+            '&start_date=' + encodeURIComponent(theStartDate) +
+            '&duration=' + encodeURIComponent(theDuration);
+    
+    xhr.open('GET', url, false);
+    
+    xhr.send();
+    
+    if (xhr.status === 200) {
+        var response = xhr.responseText;
+        return response === "True";
+    } else {
+        console.log('Error occured: ' + xhr.statusText);
+        return false;
+    }
+}
+
+
+
+function checkUserCard(username) {
+    var xhr = new XMLHttpRequest();
+    
+    var url = '/project_360/CheckUserCreditCardServlet?username=' + encodeURIComponent(username);
+    
+    xhr.open('GET', url, false);
+    
+    xhr.send();
+    
+    if (xhr.status === 200) {
+        var response = xhr.responseText;
+                
+        if (response.startsWith("True")) {
+            var digitsArray = response.split(", ");
+            var firstThreeDigits = digitsArray[1].split(": ")[1];
+            var lastThreeDigits = digitsArray[2].split(": ")[1];
+
+            creditCard = firstThreeDigits + '*-****-****-*' + lastThreeDigits;
+            return true;
+        } else {
+            console.log('There is no credit card');
+            return false;
+        }
+    } else {
+        console.log('Error occurred' + xhr.statusText);
+        return false;
+    }
+}

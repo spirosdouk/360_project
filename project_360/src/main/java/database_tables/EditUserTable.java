@@ -70,7 +70,7 @@ public class EditUserTable {
                 user.setAddress(rs.getString("address"));
                 user.setBirthdate(rs.getString("birthdate")); // Make sure the format matches
                 user.setDriv_lic(rs.getInt("driv_lic"));
-                user.setCredit_card(rs.getInt("credit_card"));
+                user.setCredit_card(rs.getBigDecimal("credit_card"));
                 // Set other user properties as needed
             }
         } catch (SQLException ex) {
@@ -116,7 +116,7 @@ public class EditUserTable {
                 user.setAddress(rs.getString("address"));
                 user.setBirthdate(rs.getString("birthdate"));
                 user.setDriv_lic(rs.getInt("driv_lic"));
-                user.setCredit_card(rs.getInt("credit_card"));
+                user.setCredit_card(rs.getBigDecimal("credit_card"));
                 // Set other user properties as needed
             }
         } catch (SQLException ex) {
