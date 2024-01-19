@@ -9,6 +9,11 @@ function handleRegistrationSubmit(event) {
     const creditCard = document.getElementById("creditCard").value;
     const drivingLicence = document.getElementById("drivingLicence").value;
 
+    if (creditCard !== '0' && !is16DigitInteger(creditCard)) {
+        alert('Please enter a valid 16-digit credit card number or use 0.');
+        return;
+    }
+    
     fetch('/project_360/CheckUsernameServlet?username='+encodeURIComponent(username))
             .then(response=>response.json())
             .then(data=>{
@@ -91,6 +96,11 @@ function handleLoginSubmit(event) {
     }
 }
 
+
+function is16DigitInteger(value) {
+    const stringValue = String(value);
+    return stringValue.length === 16;
+}
 
 
 function calculateAge(birthdate) {
