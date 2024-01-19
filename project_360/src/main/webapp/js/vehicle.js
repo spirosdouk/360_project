@@ -141,16 +141,17 @@ function confirmRental() {
     }
 
     // the check needs to happen here for the drivers availability.
-    if (!checkDriverAvailability(drivers_licence, fromDate, durationInDays)) {
+    var duration = (toDate - fromDate) / (1000 * 3600 * 24);
+    if (!checkDriverAvailability(drivers_licence, fromDate, duration)) {
         console.log('Driver is not available for the dates specified');
         return;
     }
     
     // also another check for the credit card
-//    if (!checkUserCard(localStorage.getItem('user'))) {
-//        console.log('There no available credit card to bill');
-//        return;
-//    }
+    if (!checkUserCard(localStorage.getItem('user'))) {
+        console.log('There no available credit card to bill');
+        return;
+    }
 
     const includeInsurance = document.getElementById('modalInsuranceCheck').checked;
     const licensePlate = selectedVehicleLicPlate;
@@ -184,7 +185,7 @@ function confirmRental() {
                 rental_date: fromDateInput.value,
                 is_returned: "false",
                 has_insurance: includeInsurance?"true":"false",
-                new_carplate: "none"
+                car_change: 0
             };
             console.log("newRentalData:", newRentalData);
 
@@ -199,8 +200,8 @@ function confirmRental() {
                     var modal = bootstrap.Modal.getInstance(myModalEl);
                     modal.hide();
                     alert("Rental transaction recorded successfully");
-//                    console.log('Credit card: ' + creditCard + '\nHas been billed succesfully\n');
-//                    alert("Credit card: " + creditCard + "\nHas been billed succesfully\n");
+                    console.log('Credit card: ' + creditCard + '\nHas been billed succesfully\n');
+                    alert("Credit card: " + creditCard + "\nHas been billed succesfully\n");
                     window.location.reload();
                 } else {
                     console.error("Error creating rental transaction:", xhrRentalCreation.responseText);
