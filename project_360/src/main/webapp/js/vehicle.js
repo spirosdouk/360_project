@@ -136,7 +136,7 @@ function confirmRental() {
     const durationInDays = (toDate-fromDate)/(1000*3600*24);
     const otherDriverSelected = document.getElementById('modalDifferentDriver').checked;
     if (otherDriverSelected) {
-        drivers_licence = document.getElementById('drivingLicenceField');
+        drivers_licence = document.getElementById('drivingLicenceField').value;
         console.log('The drivers licence is ' + drivers_licence);
     }
 
