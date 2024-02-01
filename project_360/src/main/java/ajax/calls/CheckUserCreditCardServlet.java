@@ -35,8 +35,8 @@ public class CheckUserCreditCardServlet extends HttpServlet {
             
             BigDecimal creditCardNumber = user.getCredit_card();
             if (!creditCardNumber.equals(0)){
-                String firstThreeDigits = String.valueOf(creditCardNumber).substring(0, 3);
-                String lastThreeDigits = String.valueOf(creditCardNumber).substring(13);
+                String firstThreeDigits = creditCardNumber.toString().substring(0, 3);
+                String lastThreeDigits = creditCardNumber.toString().substring(13);
                 
                 out.print("True, first_three_digits: " + firstThreeDigits + 
                         ", last_three_digits: " + lastThreeDigits);
